@@ -3,6 +3,7 @@
 	<name>Sanatorio-Connector</name>
 	<comment></comment>
 	<projects>
+		<project>Sanatorio-Client</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
