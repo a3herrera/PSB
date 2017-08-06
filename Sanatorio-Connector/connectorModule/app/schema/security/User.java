@@ -11,11 +11,15 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -25,6 +29,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import app.schema.embedable.Audit;
 import app.schema.enumerate.UserStates;
+import app.schema.person.Person;
+import app.schema.person.PersonInformation;
 
 /**
  * @author Angel Alfaro
@@ -34,7 +40,7 @@ import app.schema.enumerate.UserStates;
 @Access(AccessType.FIELD)
 @Table(name = User.TABLE_NAME, uniqueConstraints = {
 		@UniqueConstraint(columnNames = "USER_NAME", name = "CNN_UN_USER_NAME") })
-@SequenceGenerator(name = User.SEQUENCE_NAME, sequenceName = User.SEQUENCE_NAME)
+@TableGenerator(name = User.SEQUENCE_NAME, table = User.SEQUENCE_NAME, pkColumnName = "USER_KEY", valueColumnName = "USER_VALUE", pkColumnValue = "USER_ID", allocationSize = 1)
 public class User extends Audit {
 
 	/**
@@ -46,6 +52,7 @@ public class User extends Audit {
 
 	@Id
 	@Column(name = "USER_ID")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long ID;
 
 	@NotNull(message = "{field.not.null}")
@@ -69,6 +76,10 @@ public class User extends Audit {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "PROFILE_ID", updatable = true, insertable = true)
 	private Profile profile;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "PERSON_ID", nullable = false)
+	private Person person;
 
 	@Version
 	private long version;
@@ -119,6 +130,14 @@ public class User extends Audit {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 }

@@ -2,9 +2,12 @@ package app.schema.security;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -18,7 +21,7 @@ import app.schema.embedable.Audit;
 @Entity
 @Table(name = Profile.TABLE_NAME, uniqueConstraints = {
 		@UniqueConstraint(columnNames = "NAME", name = "CNN_UN_PROFILE_NAME") })
-@SequenceGenerator(name = Profile.SEQUENCE_NAME, schema = Profile.SEQUENCE_NAME)
+@TableGenerator(name = Profile.SEQUENCE_NAME, table = Profile.SEQUENCE_NAME, pkColumnName = "PROFILE_KEY", valueColumnName = "PROFILE_VALUE", pkColumnValue = "PROFILE_ID", allocationSize = 1)
 public class Profile extends Audit {
 
 	/**
@@ -31,6 +34,7 @@ public class Profile extends Audit {
 
 	@Id
 	@Column(name = "PROFILE_ID")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long ID;
 
 	@Column(name = "NAME", nullable = false, length = 30)
