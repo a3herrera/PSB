@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="DistribuidorSanatorio">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="DistribuidorSanatorio-Core.jar" deploy-path="/" handle="module:/resource/DistribuidorSanatorio-Core/DistribuidorSanatorio-Core">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="DistribuidorSanatorio-Client.jar" deploy-path="/" handle="module:/resource/DistribuidorSanatorio-Client/DistribuidorSanatorio-Client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="DistribuidorSanatorio-Schema.jar" deploy-path="/lib" handle="module:/resource/DistribuidorSanatorio-Schema/DistribuidorSanatorio-Schema">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="DistribuidorSanatorio-Web.war" deploy-path="/" handle="module:/resource/DistribuidorSanatorio-Web/DistribuidorSanatorio-Web">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
