@@ -13,6 +13,6 @@ public class Constants {
 	public static final String USER = "USER";
 	public static final String PROFILE = "PROFILE";
 	
-	public static final String LOGIN_PAGE = "/init/index.html";
+	public static final String LOGIN_PAGE = "/init/login.view";
 	public static final String MAIN_PAGE = "/init/dashboard.xhtml";
 }

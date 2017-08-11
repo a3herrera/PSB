@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/base/template.xhtml">
+
+	<ui:define name="pageTitle">
+		<title>#{language['login']}</title>
+	</ui:define>
+
+
+	<ui:define name="pageAdditionals">
+		<h:outputStylesheet library="css-custom" name="loginTheme.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="main">
+			<div class="container">
+				<div style="margin: 0 auto">
+					<div class="middle">
+						<div id="login">
+							<h:form>
+								<fieldset class="clearfix">
+									<p>
+										<input type="text" Placeholder="#{language['user']}"
+											jsf:id="user" jsf:value="#{holaMundoPB.user.userName}" />
+									</p>
+									<h:message for="user"/>
+									<p>
+										<input type="password" Placeholder="#{language['password']}"
+											jsf:value="#{holaMundoPB.user.passWord}" jsf:id="password"/>
+									</p>
+									<h:message for="password"/>
+									<div>
+										<span
+											style="width: 48%; text-align: left; display: inline-block;"><a
+											href="#">#{language['password.reset']}</a></span>
+										<h:commandLink action="#{holaMundoPB.holaMundo()}"
+											value="#{language['login']}"
+											styleClass="btn btn-default btn-sm" style="width: 125px" />
+									</div>
+									<h:messages/>
+								</fieldset>
+								<div class="clearfix"></div>
+							</h:form>
+							<div class="clearfix"></div>
+						</div>
+						<div class="logo">LOGO
+							<div class="clearfix"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</ui:define>
+
+</ui:composition>

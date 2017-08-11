@@ -3,11 +3,16 @@
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
 	<application>
-		<message-bundle>resources.application</message-bundle>
 		<locale-config>
-			<default-locale>en</default-locale>
+			<default-locale>es</default-locale>
 		</locale-config>
+		<resource-bundle>
+			<base-name>app.web.resources.webLanguage</base-name>
+			<var>language</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>app.web.resources.messages</base-name>
+			<var>message</var>
+		</resource-bundle>
 	</application>
-
-
 </faces-config>
