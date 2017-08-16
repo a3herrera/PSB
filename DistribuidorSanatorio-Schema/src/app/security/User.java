@@ -22,7 +22,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -54,14 +53,13 @@ public class User extends Audit {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long ID;
 
-	@NotNull(message = "{field.not.null}")
-	@NotEmpty(message = "{field.not.null}")
+	
 	@Size(max = 50, min = 8, message = "{field.size.error}")
+	@NotNull(message = "{field.not.null}")
 	@Column(name = "USER_NAME", nullable = false, length = 50)
 	private String userName;
 
 	@NotNull(message = "{field.not.null}")
-	@NotEmpty(message = "{field.not.null}")
 	@Size(max = 150, min = 8, message = "{field.size.error}")
 	@Column(name = "PASSWORD", nullable = false, length = 150) 
 	private String passWord;

@@ -1,9 +1,13 @@
 package app.web.security;
 
-import app.schema.enumerated.UserStates;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import app.security.User;
 import app.web.base.SecurityBeanBase;
 
+@ViewScoped
+@ManagedBean(name = "SecurityPageBean")
 public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	/**
@@ -14,6 +18,12 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	public SecurityPageBean() {
 		entity = new User();
 	}
+	
+	@Override
+	protected String getMsgNotResult() {
+		return getMessages().getString("message.login.notUser");
+	}
+
 
 	@Override
 	protected void beforeFind() {
@@ -24,26 +34,30 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	@Override
 	protected boolean eligibilities() throws Exception {
 		if (resultEntity != null) {
-			if (resultEntity.getState() != UserStates.Active) {
-				warnMsg(getMessages().getString("message.login.error"));
-				return false;
-			}
-//			if (!resultEntity.getPassWord().equals(
-//					Utils.getEncriptyonMessage(entity.getPassWord(),
-//							EncryptionType.MD5))) {
-//				warnMsg(getMessages(.getString("message.login.error"));
-//				return false;
-//			}
+			// if (resultEntity.getState() != UserStates.Active) {
+			// warnMsg(getMessages().getString("message.login.error"));
+			// return false;
+			// }
+			// if (!resultEntity.getPassWord().equals(
+			// Utils.getEncriptyonMessage(entity.getPassWord(),
+			// EncryptionType.MD5))) {
+			// warnMsg(getMessages(.getString("message.login.error"));
+			// return false;
+			// }
 
-//			if (resultEntity.getPerfilID() == null
-//					|| !resultEntity.getPerfilID().isEstado()) {
-//				errorMsg(getMsg().getString("message.login.profile.error"));
-//				return false;
-//			}
+			// if (resultEntity.getPerfilID() == null
+			// || !resultEntity.getPerfilID().isEstado()) {
+			// errorMsg(getMsg().getString("message.login.profile.error"));
+			// return false;
+			// }
 		} else {
 			warnMsg(getMessages().getString("message.login.user.error"));
 			return false;
 		}
 		return super.eligibilities();
 	}
+
+	
+
+	
 }

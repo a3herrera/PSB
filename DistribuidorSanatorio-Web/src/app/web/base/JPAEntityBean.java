@@ -11,7 +11,7 @@ public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 	 */
 	private static final long serialVersionUID = 4284260281478004795L;
 
-	@ManagedProperty(value = "#{messages}")
+	@ManagedProperty(value = "#{message}")
 	private ResourceBundle messages;
 
 	@ManagedProperty(value = "#{language}")
@@ -32,5 +32,16 @@ public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 	public void setLanguage(ResourceBundle language) {
 		this.language = language;
 	}
+	
+	protected  String getCreateMsg() {
+		return getMessages().getString("info.message.new");
+	}
 
+	protected  String getUpdateMsg() {
+		return getMessages().getString("info.message.update");
+	}
+	
+	protected  String getRemoveMsg() {
+		return getMessages().getString("info.message.remove");
+	}
 }

@@ -2,7 +2,7 @@ package app.web.base;
 
 import app.client.utilities.Constants;
 
-public class SecurityBeanBase<E> extends JPAEntityBean<E> {
+public abstract class SecurityBeanBase<E> extends JPAEntityBean<E> {
 
 	/**
 	 * 
@@ -15,8 +15,8 @@ public class SecurityBeanBase<E> extends JPAEntityBean<E> {
 	protected String isLoggedNR = "main";
 	protected String notLoggedNR = "login";
 
-	protected String msgError = "error";
-	protected String msgNotResult = "not Result";
+	protected abstract String getMsgNotResult();
+
 
 	public boolean isLogged() {
 		return logged;
@@ -34,6 +34,17 @@ public class SecurityBeanBase<E> extends JPAEntityBean<E> {
 		super.clear();
 	}
 
+	@Override
+	protected void find() {
+		try {
+			resultEntity = facadeHandler.findEntity(getListQL(), params, getClassName());
+			// resultEntity = findEntity(getListQL(), getParams(), em);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultEntity = null;
+		}
+	}
+
 	protected boolean eligibilities() throws Exception {
 		return true;
 	}
@@ -44,7 +55,7 @@ public class SecurityBeanBase<E> extends JPAEntityBean<E> {
 		int countResult = getEntityCount();
 
 		if (countResult == 0) {
-			warnMsg(msgNotResult);
+			warnMsg(getMsgNotResult());
 			return null;
 		}
 		if (countResult == 1) {

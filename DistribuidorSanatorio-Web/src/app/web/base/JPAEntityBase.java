@@ -35,15 +35,17 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	protected String whereQL;
 	protected Map<String, Object> params = new HashMap<String, Object>();
 
-	protected String msgCreate = "created";
-	protected String msgUpdate = "updated";
-	protected String msgRemove = "removed";
+	protected abstract String getCreateMsg();
+	protected abstract String getUpdateMsg();
+	protected abstract String getRemoveMsg();
 
 	protected String newNR = "new";
 	protected String updateNR = "update";
 	protected String removeNR = "remove";
 
 	protected String add = "add";
+	
+	
 
 	public void clear() {
 		listEntity = null;
@@ -150,10 +152,10 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 
 	protected String navigationOption() {
 		if (isNew()) {
-			infMsg(msgCreate);
+			infMsg(getCreateMsg());
 			return newNR;
 		} else {
-			infMsg(msgUpdate);
+			infMsg(getUpdateMsg());
 			return updateNR;
 		}
 	}
@@ -179,6 +181,8 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 			} catch (Exception ex) {
 				return null;
 			}
+			
+			
 			return navigationOption();
 		}
 		return null;
@@ -204,7 +208,7 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 				return null;
 			}
 			clear();
-			infMsg(msgRemove);
+			infMsg(getRemoveMsg());
 			return removeNR;
 		}
 		return null;

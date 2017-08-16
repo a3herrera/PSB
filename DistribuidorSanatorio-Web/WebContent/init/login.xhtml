@@ -25,29 +25,35 @@
 								<fieldset class="clearfix">
 									<p>
 										<input type="text" Placeholder="#{language['user']}"
-											jsf:id="user" jsf:value="#{holaMundoPB.user.userName}" />
+											jsf:id="user" jsf:value="#{SecurityPageBean.entity.userName}" />
 									</p>
-									<h:message for="user"/>
+									<h:message for="user" />
 									<p>
 										<input type="password" Placeholder="#{language['password']}"
-											jsf:value="#{holaMundoPB.user.passWord}" jsf:id="password"/>
+											jsf:value="#{SecurityPageBean.entity.passWord}"
+											jsf:id="password" />
 									</p>
-									<h:message for="password"/>
+									<h:message for="password" />
 									<div>
-										<span
-											style="width: 48%; text-align: left; display: inline-block;"><a
-											href="#">#{language['password.reset']}</a></span>
-										<h:commandLink action="#{holaMundoPB.holaMundo()}"
+																					
+										<h:commandLink action="#{SecurityPageBean.login}"
 											value="#{language['login']}"
-											styleClass="btn btn-default btn-sm" style="width: 125px" />
+											styleClass="btn btn-outline-dark btn-sm" />
+										
+										<h:commandLink
+											value="#{language['password.reset']}"
+											styleClass="badge" style="margin-left: 25px"/>
+												
+										
 									</div>
-									<h:messages/>
+									<h:messages globalOnly="true" />
 								</fieldset>
 								<div class="clearfix"></div>
 							</h:form>
 							<div class="clearfix"></div>
 						</div>
-						<div class="logo">LOGO
+						<div class="logo">
+							LOGO
 							<div class="clearfix"></div>
 						</div>
 

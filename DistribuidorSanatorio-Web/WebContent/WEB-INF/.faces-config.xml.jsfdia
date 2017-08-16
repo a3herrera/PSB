@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PROCESS model-entity="JSFProcess"/>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="main::#init#blankPage.xhtml" NAME="output"
+    PATH="/init/blankPage.xhtml" TARGET="rules:#init#blankPage.xhtml"
+    TITLE="main" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="login::#init#login.xhtml" NAME="output1"
+    PATH="/init/login.xhtml" TARGET="rules:#init#login.xhtml"
+    TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#init#blankPage.xhtml"
+  PATH="/init/blankPage.xhtml" SHAPE="32,241,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#init#login.xhtml" PATH="/init/login.xhtml"
+  SHAPE="32,353,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>
