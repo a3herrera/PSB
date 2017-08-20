@@ -282,4 +282,23 @@ public class StringUtility {
 		}
 		return hash;
 	}
+	
+	public static String concatValues(boolean spaceBetween, final String... values) {
+		if(CollectionsUtiliy.isEmptyArray(values)) {
+			return "";
+		}
+		
+		StringBuilder builder = new StringBuilder();
+		for(String value: values) {
+			if(!isEmpty(value)) {				
+				if(!isEmpty(builder.toString()) && spaceBetween) {
+					builder.append(" ");
+				}
+				
+				builder.append(value);
+			}
+		}
+		
+		return builder.toString();
+	}
 }

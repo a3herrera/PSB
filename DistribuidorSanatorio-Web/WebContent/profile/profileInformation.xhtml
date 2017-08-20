@@ -1,0 +1,35 @@
+<div class="row">
+	<div class="col-lg-2">
+		<script type="text/javascript">
+			var hash = 'd6fe8c82fb0abac17a702fd2a94eff37';
+			var options ={
+					size:100,
+					format:'svg'
+					};
+			var data = new Identicon(hash, options).toString();
+			document.write('<img style="rounded-circle" src="data:image/svg+xml;base64,' + data +'" />')
+		</script>
+	</div>
+	<div class="col-lg-10">
+		<div class="row">
+			<span class="h6">#{language['app.profile.infoGeneral']}</span>
+		</div>
+		<hr />
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label"> <strong>#{language['label.name']}:</strong>
+			</label> <label class="form-control-plaintext"> </label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label"> <strong>#{language['user']}:</strong>
+			</label> <label class="form-control-plaintext"> </label>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label"> <strong>#{language['label.email']}:</strong>
+			</label> <label class="form-control-plaintext"> </label>
+		</div>
+		<div class="row">
+			<span class="h6"> #{language['app.profile.infoAditional']}</span>
+		</div>
+		<hr/>
+	</div>
+</div>

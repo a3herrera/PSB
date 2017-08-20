@@ -11,18 +11,34 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta http-equiv="expires" content="-1" />
-    
+
 	<ui:insert name="pageTitle" />
-	
+
 	<h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+	<style>
+html {
+	font-size: 14px;
+}
+
+.container {
+	min-width: 1000px;
+	width: auto !important;
+	width: 1000px;
+}
+</style>
 	<ui:insert name="pageAdditionals" />
 </h:head>
 <h:body>
+	<div class="container" style="margin-top: 75px;">
 	<ui:include src="/base/header.xhtml" />
-	<div>
-		<ui:insert name="body" />	
+		<div class="row">
+			<div class="col-lg-2">Menu temporal</div>
+			<div class="col-lg-10">
+				<ui:insert name="body" />
+			</div>
+		</div>
 	</div>
-	
+
 	<h:outputScript library="js" target="body" name="jquery-3.2.1.min.js"></h:outputScript>
 	<h:outputScript library="js" target="body" name="popper.min.js"></h:outputScript>
 	<h:outputScript library="js" target="body" name="bootstrap.min.js"></h:outputScript>

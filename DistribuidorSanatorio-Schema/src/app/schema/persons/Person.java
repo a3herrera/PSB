@@ -69,7 +69,7 @@ public class Person extends Audit {
 
 	@Version
 	private long version;
-
+	
 	public long getID() {
 		return ID;
 	}
