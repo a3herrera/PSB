@@ -54,13 +54,13 @@ public class User extends Audit {
 	private long ID;
 
 	
-	@Size(max = 50, min = 8, message = "{field.size.error}")
+	@Size(max = 50, min = 4, message = "{field.size.error}")
 	@NotNull(message = "{field.not.null}")
 	@Column(name = "USER_NAME", nullable = false, length = 50)
 	private String userName;
 
 	@NotNull(message = "{field.not.null}")
-	@Size(max = 150, min = 8, message = "{field.size.error}")
+	@Size(max = 150, min = 4, message = "{field.size.error}")
 	@Column(name = "PASSWORD", nullable = false, length = 150) 
 	private String passWord;
 
@@ -75,7 +75,7 @@ public class User extends Audit {
 	private Profile profile;
 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PERSON_ID", nullable = false)
+	@JoinColumn(name = "PERSON_ID", nullable = true)
 	private Person person;
 
 	@Version

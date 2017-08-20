@@ -58,7 +58,7 @@ public class Person extends Audit {
 	private Date birthDay;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "GENDER", nullable = true, length = 20)
+	@Column(name = "GENDER", nullable = false, length = 20)
 	private Gender gender;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "person")

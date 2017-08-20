@@ -1,10 +1,16 @@
 package app.security;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
@@ -44,6 +50,11 @@ public class Profile extends Audit {
 
 	@Version
 	private long version;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "PROFILE_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "MENU_ID") })
+	private List<Menu> menu;
 
 	public long getID() {
 		return ID;

@@ -3,6 +3,9 @@ package app.web.security;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import app.client.enums.EncryptionTypes;
+import app.client.utilities.StringUtility;
+import app.schema.enumerated.UserStates;
 import app.security.User;
 import app.web.base.SecurityBeanBase;
 
@@ -18,12 +21,11 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	public SecurityPageBean() {
 		entity = new User();
 	}
-	
+
 	@Override
 	protected String getMsgNotResult() {
 		return getMessages().getString("message.login.notUser");
 	}
-
 
 	@Override
 	protected void beforeFind() {
@@ -34,16 +36,18 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	@Override
 	protected boolean eligibilities() throws Exception {
 		if (resultEntity != null) {
-			// if (resultEntity.getState() != UserStates.Active) {
-			// warnMsg(getMessages().getString("message.login.error"));
-			// return false;
-			// }
-			// if (!resultEntity.getPassWord().equals(
-			// Utils.getEncriptyonMessage(entity.getPassWord(),
-			// EncryptionType.MD5))) {
-			// warnMsg(getMessages(.getString("message.login.error"));
-			// return false;
-			// }
+			if (resultEntity.getState() != UserStates.Active) {
+				warnMsg(getMessages().getString("message.login.userError"));
+				return false;
+			}
+
+			String token = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
+			if (StringUtility.isEmpty(resultEntity.getPassWord())
+					|| (!StringUtility.equals(resultEntity.getPassWord(), token))) {
+				warnMsg(getMessages().getString("message.login.error"));
+				return false;
+
+			}
 
 			// if (resultEntity.getPerfilID() == null
 			// || !resultEntity.getPerfilID().isEstado()) {
@@ -51,13 +55,10 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			// return false;
 			// }
 		} else {
-			warnMsg(getMessages().getString("message.login.user.error"));
+			warnMsg(getMessages().getString("message.login.notUser"));
 			return false;
 		}
 		return super.eligibilities();
 	}
 
-	
-
-	
 }

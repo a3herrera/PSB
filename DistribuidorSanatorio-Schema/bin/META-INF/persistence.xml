@@ -6,6 +6,7 @@
 		<class>app.schema.persons.PersonInformation</class>
 		<class>app.security.Profile</class>
 		<class>app.security.User</class>
+		<class>app.security.Menu</class>
 <!-- 		<properties> -->
 <!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sanatorio"/> -->
 <!-- 			<property name="javax.persistence.jdbc.user" value="sanatorio"/> -->
