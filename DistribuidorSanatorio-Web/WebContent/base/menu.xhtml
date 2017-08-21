@@ -1,0 +1,14 @@
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ul class="nav flex-column nav-pills">
+		<ui:repeat var="option" value="#{SecurityPageBean.mainOptions}">
+			<li class="nav-item">
+				<h:commandLink action="#{SecurityPageBean.actionMenu(option)}" value="#{option.label}" styleClass="nav-link" />
+			</li>
+		</ui:repeat>
+	</ul>
+</h:form>

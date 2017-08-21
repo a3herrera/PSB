@@ -40,7 +40,7 @@ public class Profile extends Audit {
 	@Id
 	@Column(name = "PROFILE_ID")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
-	private long ID;
+	private long id;
 
 	@Column(name = "NAME", nullable = false, length = 30)
 	private String name;
@@ -54,14 +54,14 @@ public class Profile extends Audit {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "PROFILE_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "MENU_ID") })
-	private List<Menu> menu;
+	private List<Menu> options;
 
 	public long getID() {
-		return ID;
+		return id;
 	}
 
 	public void setID(long iD) {
-		ID = iD;
+		id = iD;
 	}
 
 	public String getName() {
@@ -86,6 +86,14 @@ public class Profile extends Audit {
 
 	public void setVersion(long version) {
 		this.version = version;
+	}
+
+	public List<Menu> getOptions() {
+		return options;
+	}
+
+	public void setOptions(List<Menu> options) {
+		this.options = options;
 	}
 
 }

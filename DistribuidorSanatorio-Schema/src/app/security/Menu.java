@@ -2,8 +2,6 @@ package app.security;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import app.schema.embedable.Audit;
+import app.schema.utilities.Utilities;
 
 /**
  * 
@@ -41,13 +41,16 @@ public class Menu extends Audit {
 	@Id
 	@Column(name = "MENU_ID")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
-	private long ID;
+	private long id;
 
 	@Column(name = "KEY_", nullable = false, length = 50)
 	private String key;
 
+	@Column(name = "DEFAULT_KEY", nullable = false, length = 100)
+	private String defaultKey;
+
 	@Column(name = "URL", nullable = true, length = 50)
-	private String URL;
+	private String url;
 
 	@Column(name = "ACTIVE", nullable = false, length = 2)
 	private boolean active;
@@ -68,12 +71,29 @@ public class Menu extends Audit {
 	@Version
 	private long version;
 
+	@Transient
+	private String label;
+
+	@Transient
+	public Menu createCopy() throws Exception {
+		Menu copy = (Menu) Utilities.clone(this, true);
+		
+		copy.setActive(isActive());
+		copy.setDefaultKey(getDefaultKey());
+		copy.setKey(getKey());
+		copy.setParentID(getParentID());
+		copy.setRedirect(isRedirect());
+		copy.setParent(isParent());
+		copy.setURL(getURL());
+		return copy;
+	}
+
 	public long getID() {
-		return ID;
+		return id;
 	}
 
 	public void setID(long iD) {
-		ID = iD;
+		id = iD;
 	}
 
 	public boolean isParent() {
@@ -101,11 +121,11 @@ public class Menu extends Audit {
 	}
 
 	public String getURL() {
-		return URL;
+		return url;
 	}
 
 	public void setURL(String uRL) {
-		URL = uRL;
+		url = uRL;
 	}
 
 	public boolean isActive() {
@@ -138,6 +158,22 @@ public class Menu extends Audit {
 
 	public void setSubMenus(List<Menu> subMenus) {
 		this.subMenus = subMenus;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getDefaultKey() {
+		return defaultKey;
+	}
+
+	public void setDefaultKey(String defaultKey) {
+		this.defaultKey = defaultKey;
 	}
 
 }

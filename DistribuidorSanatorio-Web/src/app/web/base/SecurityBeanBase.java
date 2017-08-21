@@ -38,7 +38,6 @@ public abstract class SecurityBeanBase<E> extends JPAEntityBean<E> {
 	protected void find() {
 		try {
 			resultEntity = facadeHandler.findEntity(getListQL(), params, getClassName());
-			// resultEntity = findEntity(getListQL(), getParams(), em);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultEntity = null;

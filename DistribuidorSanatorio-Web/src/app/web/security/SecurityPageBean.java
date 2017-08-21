@@ -1,15 +1,24 @@
 package app.web.security;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import app.client.enums.EncryptionTypes;
+import app.client.utilities.CollectionsUtiliy;
+import app.client.utilities.Constants;
+import app.client.utilities.ConstantsMessages;
 import app.client.utilities.StringUtility;
 import app.schema.enumerated.UserStates;
+import app.security.Menu;
+import app.security.Profile;
 import app.security.User;
 import app.web.base.SecurityBeanBase;
 
-@ViewScoped
+@SessionScoped
 @ManagedBean(name = "SecurityPageBean")
 public class SecurityPageBean extends SecurityBeanBase<User> {
 
@@ -24,7 +33,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	@Override
 	protected String getMsgNotResult() {
-		return getMessages().getString("message.login.notUser");
+		return getMessages().getString(ConstantsMessages.MSG_LOGIN_NOT_USER);
 	}
 
 	@Override
@@ -37,7 +46,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	protected boolean eligibilities() throws Exception {
 		if (resultEntity != null) {
 			if (resultEntity.getState() != UserStates.Active) {
-				warnMsg(getMessages().getString("message.login.userError"));
+				warnMsg(getMessages().getString(ConstantsMessages.MSG_LOGIN_USER_ERROR));
 				return false;
 			}
 
@@ -49,16 +58,125 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 			}
 
-			// if (resultEntity.getPerfilID() == null
-			// || !resultEntity.getPerfilID().isEstado()) {
-			// errorMsg(getMsg().getString("message.login.profile.error"));
-			// return false;
-			// }
+			final Profile profile = resultEntity.getProfile();
+
+			if (profile == null || (!profile.isState())) {
+				warnMsg(getMessages().getString(ConstantsMessages.MSG_LOGIN_USER_ERROR));
+				return false;
+			}
+
+			if (CollectionsUtiliy.isEmptyList(getMainOptions())) {
+				warnMsg(getMessages().getString(ConstantsMessages.MSG_LOGIN_USER_ERROR));
+				return false;
+			}
+
 		} else {
-			warnMsg(getMessages().getString("message.login.notUser"));
+			warnMsg(getMessages().getString(ConstantsMessages.MSG_LOGIN_NOT_USER));
 			return false;
 		}
 		return super.eligibilities();
+	}
+
+	@Override
+	public String login() throws Exception {
+		String result = super.login();
+
+		if (!StringUtility.isEmpty(result) && !CollectionsUtiliy.isEmptyList(mainOptions)) {
+			List<Menu> allOptions = allOption(mainOptions);
+			getSessionScope().put(Constants.USER_OPTIONS, allOptions);
+		}
+		return result;
+	}
+
+	public List<Menu> allOption(List<Menu> options) {
+		List<Menu> allOptions = new ArrayList<Menu>();
+		for (Menu option : options) {
+			allOptions.add(option);
+			if (CollectionsUtiliy.isEmptyList(option.getSubMenus())) {
+				for (Menu subOption : option.getSubMenus()) {
+					allOptions.add(subOption);
+				}
+			}
+		}
+		return allOptions;
+	}
+
+	private List<Menu> mainOptions = Collections.emptyList();
+
+	public List<Menu> getMainOptions() throws Exception {
+		if (CollectionsUtiliy.isEmptyList(mainOptions)) {
+			mainOptions = new ArrayList<Menu>();
+			if (resultEntity != null && resultEntity.getProfile() != null
+					&& !CollectionsUtiliy.isEmptyList(resultEntity.getProfile().getOptions())) {
+				List<Menu> options = resultEntity.getProfile().getOptions();
+
+				for (Menu option : options) {
+					Menu temporal = checkMenu(option);
+					if (temporal != null)
+						mainOptions.add(temporal);
+				}
+			}
+		}
+		return mainOptions;
+	}
+
+	private Menu checkMenu(Menu menu) throws Exception {
+		if (menu.isActive()) {
+			Menu menuCopy = menu.createCopy();
+			List<Menu> subOptions = new ArrayList<Menu>();
+			if (!CollectionsUtiliy.isEmptyList(menu.getSubMenus())) {
+				for (Menu subOption : menu.getSubMenus()) {
+					Menu temporal = checkSubMenu(menuCopy, subOption);
+					if (temporal != null)
+						subOptions.add(temporal);
+				}
+			}
+
+			assignLabel(menuCopy);
+			menuCopy.setSubMenus(subOptions);
+			return menuCopy;
+		}
+
+		return null;
+	}
+
+	private Menu checkSubMenu(Menu parent, Menu child) throws Exception {
+		if (child.isActive()) {
+			Menu copy = child.createCopy();
+			copy.setParentID(parent);
+			assignLabel(copy);
+			return copy;
+		}
+		return null;
+	}
+
+	private void assignLabel(Menu menu) {
+		try {
+			menu.setLabel(getLanguage().getString(menu.getKey()));
+		} catch (Exception ex) {
+			menu.setLabel(menu.getDefaultKey());
+		}
+
+		if (StringUtility.isEmpty(menu.getLabel())) {
+			menu.setLabel(menu.getDefaultKey());
+		}
+
+	}
+
+	public String actionMenu(Menu option) {
+		if (option != null) {
+			String url = option.getURL();
+
+			if (!url.startsWith("/"))
+				url = "/".concat(url);
+
+			if (!url.endsWith(".view") && !url.endsWith(".xhtml"))
+				url = url.concat(".xhtml");
+
+			url = url.concat("?faces-redirect=").concat(String.valueOf(option.isRedirect()));
+			return url;
+		}
+		return "";
 	}
 
 }

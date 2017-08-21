@@ -180,7 +180,7 @@ public class TypesUtility {
 		return null;
 	}
 
-	public static boolean isEmptyString(String value) {
+	public static boolean isEmptyString(final String value) {
 		return value == null || value.trim().equals("");
 	}
 
@@ -326,19 +326,19 @@ public class TypesUtility {
 	 * @param ignoreCase
 	 * @return
 	 */
-	public static boolean compareStrings(String value1, String value2, boolean ignoreCase) {
+	public static boolean compareStrings(final String value1, final String value2, final boolean ignoreCase) {
 		if (isEmptyString(value1) && isEmptyString(value2)) {
 			return true;
 		}
 		if ((isEmptyString(value1) && !isEmptyString(value2)) || (!isEmptyString(value1) && isEmptyString(value2))) {
 			return false;
 		}
-		value1 = value1.trim();
-		value2 = value2.trim();
+		String temp1 = value1.trim();
+		String temp2 = value2.trim();
 		if (ignoreCase) {
-			return value1.equalsIgnoreCase(value2);
+			return temp1.equalsIgnoreCase(temp2);
 		} else {
-			return value1.equals(value2);
+			return temp1.equals(temp2);
 		}
 	}
 
