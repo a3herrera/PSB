@@ -12,10 +12,15 @@
 		<div class="row">
 			<span class="h4">#{language['app.admin.title']}</span>
 		</div>
-		<div class="row">
-			<nav class="breadcrumb">
-				
-			</nav>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:include src="/base/subMenu.xhtml" />
+			</div>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:insert name="subBody" />
+			</div>
 		</div>
 	</ui:define>
 </ui:composition>

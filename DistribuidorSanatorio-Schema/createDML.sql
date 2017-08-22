@@ -9,6 +9,10 @@ INSERT INTO `sanatorio`.`users` (`USER_ID`, `PASSWORD`, `STATE`, `USER_NAME`, `V
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='1' WHERE `MENU_KEY`='MENU_ID';
 INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('1', '/administration/administration.xhtml', '1', 'Admin', '1', 'label.menu.admin', '1', '1',sysdate());
 
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='2' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('2', '/administration/profiles.xhtml', '1', 'Profiles', '0', 'label.menu.profiles', '0', '1', '1',sysdate());
+
+
 
 INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '1');
 

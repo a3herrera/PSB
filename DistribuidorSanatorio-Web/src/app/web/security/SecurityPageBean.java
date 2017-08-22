@@ -92,7 +92,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		List<Menu> allOptions = new ArrayList<Menu>();
 		for (Menu option : options) {
 			allOptions.add(option);
-			if (CollectionsUtiliy.isEmptyList(option.getSubMenus())) {
+			if (!CollectionsUtiliy.isEmptyList(option.getSubMenus())) {
 				for (Menu subOption : option.getSubMenus()) {
 					allOptions.add(subOption);
 				}
@@ -102,6 +102,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	}
 
 	private List<Menu> mainOptions = Collections.emptyList();
+	private Menu currentOption;
 
 	public List<Menu> getMainOptions() throws Exception {
 		if (CollectionsUtiliy.isEmptyList(mainOptions)) {
@@ -118,6 +119,34 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			}
 		}
 		return mainOptions;
+	}
+
+	public List<Menu> getSubOptions() {
+		Menu temporal = new Menu();
+		Menu sessionMenu = (Menu) getSessionScope().get(Constants.USER_CURRENT_OPTION);
+		boolean checkOptions = true;
+		if (currentOption != null) {
+			temporal = currentOption;
+		} else if (sessionMenu != null && currentOption == null) {
+			checkOptions = false;
+			temporal = sessionMenu;
+
+		}
+
+		if (checkOptions && (currentOption != null && sessionMenu != null)
+				&& (currentOption.getID() != sessionMenu.getID())) {
+
+			temporal = sessionMenu;
+
+		}
+
+		List<Menu> subOptions = Collections.emptyList();
+
+		if (!CollectionsUtiliy.isEmptyList(temporal.getSubMenus())) {
+			subOptions = temporal.getSubMenus();
+		}
+
+		return subOptions;
 	}
 
 	private Menu checkMenu(Menu menu) throws Exception {
@@ -167,6 +196,22 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		if (option != null) {
 			String url = option.getURL();
 
+			if (!url.startsWith("/"))
+				url = "/".concat(url);
+
+			if (!url.endsWith(".view") && !url.endsWith(".xhtml"))
+				url = url.concat(".xhtml");
+
+			url = url.concat("?faces-redirect=").concat(String.valueOf(option.isRedirect()));
+			currentOption = option;
+			return url;
+		}
+		return "";
+	}
+	
+	public String mainActionMenu(Menu option) {
+		if (option != null) {
+			String url = option.getURL();
 			if (!url.startsWith("/"))
 				url = "/".concat(url);
 

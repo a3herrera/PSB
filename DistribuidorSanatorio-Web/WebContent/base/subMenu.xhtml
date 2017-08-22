@@ -1,0 +1,14 @@
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<nav class="breadcrumb">
+		<ui:repeat var="subOption" value="#{SecurityPageBean.subOptions}">
+			<h:commandLink action="#{SecurityPageBean.mainActionMenu(subOption)}"
+				value="#{subOption.label}" styleClass="breadcrumb-item">
+			</h:commandLink>
+		</ui:repeat>
+	</nav>
+</h:form>

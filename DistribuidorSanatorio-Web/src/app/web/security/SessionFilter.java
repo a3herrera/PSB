@@ -49,13 +49,19 @@ public class SessionFilter implements Filter {
 					if (!defaultAllowed(uri)) {
 						List<Menu> options = (List<Menu>) req.getSession().getAttribute(Constants.USER_OPTIONS);
 
+						if (uri.indexOf(CSS) != -1 || uri.indexOf(IMG) != -1 || uri.indexOf(JS) != -1
+								|| uri.indexOf(Constants.MAIN_PAGE) != -1
+								|| uri.indexOf(Constants.PROFILE_PAGE) != -1) {
+							chain.doFilter(request, response);
+							return;
+						}
+
 						if (!CollectionsUtiliy.isEmptyList(options)) {
 							for (Menu option : options) {
 								String tempURL = removeFinally(option.getURL());
-								if (((uri.indexOf(tempURL) != -1)) || uri.indexOf(CSS) != -1 || uri.indexOf(IMG) != -1
-										|| uri.indexOf(JS) != -1 || uri.indexOf(Constants.MAIN_PAGE) != -1
-										|| uri.indexOf(Constants.PROFILE_PAGE) != -1) {
+								if ((uri.indexOf(tempURL) != -1)) {
 									chain.doFilter(request, response);
+									req.getSession().setAttribute(Constants.USER_CURRENT_OPTION, option);
 									return;
 								}
 
