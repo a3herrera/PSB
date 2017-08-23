@@ -103,7 +103,8 @@ public class SessionFilter implements Filter {
 	}
 
 	public boolean allwaysAllow(String uri) {
-		if (uri.endsWith(".css.view") || uri.endsWith(".js.view")) {
+		if (uri.endsWith(".css.view") || uri.endsWith(".js.view") || uri.endsWith(".eot.view")
+				|| uri.endsWith(".ttf.view") || uri.endsWith(".woff.view") || uri.endsWith(".woff2.view")) {
 			return true;
 		}
 		return false;
