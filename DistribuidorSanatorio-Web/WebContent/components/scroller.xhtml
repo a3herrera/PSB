@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<div aria-label="pagination">
+		<ul class="pagination justify-content-end pagination-sm">
+			<li class="page-item"><h:commandLink id="bf"
+					value="skip_previous" styleClass="page-link material-icons">
+				</h:commandLink></li>
+			<li class="page-item"><h:commandLink id="bp"
+					value="keyboard_arrow_left" styleClass="page-link material-icons">
+				</h:commandLink></li>
+			<li class="page-item"><h:commandLink id="bn"
+					value="keyboard_arrow_right" styleClass="page-link material-icons">
+				</h:commandLink></li>
+			<li class="page-item"><h:commandLink id="bl" value="skip_next"
+					styleClass="page-link material-icons">
+				</h:commandLink></li>
+		</ul>
+	</div>
+</ui:composition>

@@ -7,9 +7,9 @@
 	src: url("#{resource['icons:MaterialIcons-Regular.eot']}");
 	/* For IE6-8 */
 	src: local('Material Icons'), local('MaterialIcons-Regular'),
-		url("#{resource['MaterialIcons-Regular.woff2']}") format('woff2'),
-		url("#{resource['MaterialIcons-Regular.woff']}") format('woff'),
-		url("#{resource['MaterialIcons-Regular.ttf']}") format('truetype');
+		url("#{resource['icons/MaterialIcons-Regular.woff2']}") format('woff2'),
+		url("#{resource['icons/MaterialIcons-Regular.woff']}") format('woff'),
+		url("#{resource['icons/MaterialIcons-Regular.ttf']}") format('truetype');
 }
 
 .material-icons {
