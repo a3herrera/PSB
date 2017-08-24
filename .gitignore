@@ -1,3 +1,6 @@
+#ClassPath
+*.classpath
+
 # Compiled class file
 *.class
 
@@ -25,3 +28,5 @@ hs_err_pid*
 .sonarlint/
 PSB/
 RemoteSystemsTempFiles/
+DistribuidorSanatorio-Client/.classpath
+DistribuidorSanatorio-Client/.classpath
