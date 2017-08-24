@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<div class="btn-group btn-group-sm" role="group" aria-label="Create/Edit/Delete Component">
+		<h:commandButton action="#{entityPageBean.newEntity}" id="new"
+			value="add"
+			styleClass="btn btn-sm btn-outline-secondary material-icons"
+			data-toogle="tooltip" data-placement="left"
+			title="#{language['app.option.new']}" rendered="#{renderedNew}" />
+		<h:commandButton action="#{entityPageBean.newEntity}" id="update"
+			value="edit"
+			styleClass="btn btn-sm btn-outline-secondary material-icons"
+			data-toogle="tooltip" data-placement="left"
+			title="#{language['app.option.edit']}" rendered="#{renderedUpdate}" />
+		<h:commandButton action="#{entityPageBean.delete()}" id="delete"
+			value="remove"
+			styleClass="btn  btn-sm btn-outline-secondary material-icons"
+			data-toogle="tooltip" data-placement="left"
+			title="#{language['app.option.remove']}" rendered="#{renderedDelete}" />
+	</div>
+</ui:composition>

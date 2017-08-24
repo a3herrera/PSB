@@ -57,6 +57,7 @@ public class SessionFilter implements Filter {
 						}
 
 						if (!CollectionsUtiliy.isEmptyList(options)) {
+							
 							for (Menu option : options) {
 								String tempURL = removeFinally(option.getURL());
 								if ((uri.indexOf(tempURL) != -1)) {
