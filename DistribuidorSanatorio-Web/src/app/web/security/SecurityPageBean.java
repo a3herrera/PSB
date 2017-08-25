@@ -1,4 +1,6 @@
 package app.web.security;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	 * 
 	 */
 	private static final long serialVersionUID = -6193822077008977126L;
+	private static final Logger log = LogManager.getLogger(SecurityPageBean.class.getName());
 
 	public SecurityPageBean() {
 		entity = new User();
@@ -80,11 +83,13 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	@Override
 	public String login() throws Exception {
 		String result = super.login();
-
+		log.debug("login");
 		if (!StringUtility.isEmpty(result) && !CollectionsUtiliy.isEmptyList(mainOptions)) {
+			log.debug("success login ");
 			List<Menu> allOptions = allOption(mainOptions);
 			getSessionScope().put(Constants.USER_OPTIONS, allOptions);
-		}
+		} else 
+			log.error("Error login - Please try again ");
 		return result;
 	}
 
