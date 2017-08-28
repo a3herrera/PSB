@@ -2,7 +2,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
 		<span class="navbar-brand">#{language['app.name']}</span>
 		<div class="collapse navbar-collapse">
@@ -17,14 +18,11 @@
 							aria-labelledby="options"
 							style="margin-left: -115px; margin-top: 15px">
 							<h6 class="dropdown-header">#{language['app.options']}</h6>
-							<h:commandLink value="#{language['app.profile.settings']}"
-								styleClass="dropdown-item"
-								action="/profile/profileSettings.xhtml?faces-redirect=true" />
-
+							<a class="dropdown-item"
+								jsf:action="/profile/profileSettings.xhtml?faces-redirect=true">#{language['app.profile.settings']}</a>
 							<div class="dropdown-divider" />
-							<h:commandLink action="#{SecurityPageBean.logOut()}"
-								value="#{language['logout']}"
-								styleClass="dropdown-item" />
+							<a class="dropdown-item"
+								jsf:action="#{SecurityPageBean.logOut()}">#{language['logout']}</a>
 						</div>
 					</div>
 				</div>

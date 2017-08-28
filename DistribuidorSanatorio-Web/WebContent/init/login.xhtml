@@ -35,16 +35,10 @@
 									</p>
 									<h:message for="password" />
 									<div>
-																					
-										<h:commandLink action="#{SecurityPageBean.login}"
-											value="#{language['login']}"
-											styleClass="btn btn-outline-dark btn-sm" />
-										
-										<h:commandLink
-											value="#{language['password.reset']}"
-											styleClass="badge" style="margin-left: 25px"/>
-												
-										
+										<button class="btn btn-outline-dark btn-sm"
+											jsf:process="@this" jsf:action="#{SecurityPageBean.login()}">
+											#{language['login']}</button>
+										<a class="badge">#{language['password.reset']}</a>
 									</div>
 									<h:messages globalOnly="true" />
 								</fieldset>

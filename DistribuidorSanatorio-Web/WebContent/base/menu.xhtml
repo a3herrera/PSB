@@ -2,13 +2,14 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 	<ul class="nav flex-column nav-pills">
 		<ui:repeat var="option" value="#{SecurityPageBean.mainOptions}">
-			<li class="nav-item">
-				<h:commandLink action="#{SecurityPageBean.actionMenu(option)}" value="#{option.label}" styleClass="nav-link" />
-			</li>
+			<li class="nav-item"><a class="nav-link"
+				jsf:action="#{SecurityPageBean.actionMenu(option)}">
+					#{option.label} </a></li>
 		</ui:repeat>
 	</ul>
 </h:form>

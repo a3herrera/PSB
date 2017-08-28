@@ -3,34 +3,77 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
-		<span class="h5"> #{language['label.menu.profiles']} </span>
-		<div class="row justify-content-md-center" style="margin-top: 20px;">
-			<h:form class="col-lg-11">
-				<div class="row">
-					<div class="col">
-						<table class="table table-hover table-bordered table-sm">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>State</th>
-									<th width="100px">Options</th>
-								</tr>
-							</thead>
-							<tbody>
-								<ui:repeat var="item" value="#{ProfilesPageBean.paginatedList}">
-									<tr>
-										<td>#{item.name}</td>
-										<td>#{item.state}</td>
-									</tr>
-								</ui:repeat>
-							</tbody>
-						</table>
+		<h:form>
+
+			<div class="row justify-content-md-center" style="margin-top: 20px;">
+				<div class="col-lg-11">
+					<div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header bg-secondary text-white">
+									<div class="row">
+										<div class="col">
+											<span class="h6"> #{language['label.menu.profiles']} </span>
+										</div>
+										<div class="col" style="text-align: right">
+											<a class="btn btn-outline-dark btn-sm">
+												#{language['app.option.new']} </a>
+										</div>
+									</div>
+								</div>
+								<div class="card-body">
+									<table class="table table-hover  table-sm">
+										<thead>
+											<tr>
+												<th width="50px">ID</th>
+												<th>#{language['label.name']}</th>
+												<th>#{language['label.state']}</th>
+												<th width="100px">#{language['label.options']}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="item"
+												value="#{ProfilesPageBean.paginatedList}">
+												<tr>
+													<td>#{item.ID}</td>
+													<td>#{item.name}</td>
+													<td>#{item.state? language['label.enabled']:
+														language['label.disabled']}</td>
+													<td><ui:include src="/components/ced.xhtml">
+															<ui:param name="entityPageBean"
+																value="#{ProfilesPageBean}" />
+															<ui:param name="render" value="profilesF1" />
+															<ui:param name="renderNew" value="renderNew" />
+															<ui:param name="renderUpdate" value="renderUpdate" />
+															<ui:param name="renderDelete" value="renderDelete" />
+														</ui:include>
+														<button
+															class="btn btn-sm btn-outline-secondary material-icons"
+															data-toggle="modal" data-target="#exampleModal">edit</button>
+													</td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer">
+									<ui:include src="/components/scroller.xhtml">
+										<ui:param name="entityPageBean" value="#{ProfilesPageBean}" />
+										<ui:param name="render" value="profilesF1" />
+									</ui:include>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</h:form>
-		</div>
+
+
+					</div>
+			</div>
+
+		</h:form>
 
 	</ui:define>
 </ui:composition>

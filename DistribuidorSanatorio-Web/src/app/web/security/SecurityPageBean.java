@@ -1,6 +1,4 @@
 package app.web.security;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +6,9 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import app.client.enums.EncryptionTypes;
 import app.client.utilities.CollectionsUtiliy;
@@ -88,7 +89,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			log.debug("success login ");
 			List<Menu> allOptions = allOption(mainOptions);
 			getSessionScope().put(Constants.USER_OPTIONS, allOptions);
-		} else 
+		} else
 			log.error("Error login - Please try again ");
 		return result;
 	}
@@ -213,7 +214,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		}
 		return "";
 	}
-	
+
 	public String mainActionMenu(Menu option) {
 		if (option != null) {
 			String url = option.getURL();

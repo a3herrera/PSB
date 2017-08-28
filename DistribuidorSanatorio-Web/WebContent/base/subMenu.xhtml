@@ -2,13 +2,14 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 	<nav class="breadcrumb">
 		<ui:repeat var="subOption" value="#{SecurityPageBean.subOptions}">
-			<h:commandLink action="#{SecurityPageBean.mainActionMenu(subOption)}"
-				value="#{subOption.label}" styleClass="breadcrumb-item">
-			</h:commandLink>
+			<a class="breadcrumb-item"
+				jsf:action="#{SecurityPageBean.mainActionMenu(subOption)}">
+				#{subOption.label} </a>
 		</ui:repeat>
 	</nav>
 </h:form>

@@ -6,11 +6,12 @@
 	<div aria-label="pagination">
 		<ul class="pagination justify-content-end pagination-sm">
 			<li
-				class="page-item #{!entityPageBean.previousExists? 'disabled':''}"><h:commandLink
-					id="bf" disabled="#{!entityPageBean.previousExists}"
+				class="page-item #{!entityPageBean.previousExists? 'disabled':''}">
+				<h:commandLink id="bf" disabled="#{!entityPageBean.previousExists}"
 					value="skip_previous" styleClass="page-link material-icons ">
 					<f:ajax render="#{render}" />
-				</h:commandLink></li>
+				</h:commandLink>
+			</li>
 
 			<li
 				class="page-item #{!entityPageBean.previousExists? 'disabled':''}"><h:commandLink
@@ -18,19 +19,19 @@
 					value="keyboard_arrow_left" styleClass="page-link material-icons">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
-				
-			<li class="page-item disabled">
-				<h:outputFormat styleClass="page-link" value="#{language['app.option.pagination']}">
-					<f:param value="#{entityPageBean.currPage}"/>
-					<f:param value="#{entityPageBean.pageCount}"/>
-				</h:outputFormat>
-			</li>
+
+			<li class="page-item disabled"><h:outputFormat
+					styleClass="page-link" value="#{language['app.option.pagination']}">
+					<f:param value="#{entityPageBean.currPage}" />
+					<f:param value="#{entityPageBean.pageCount}" />
+				</h:outputFormat></li>
 			<li class="page-item #{!entityPageBean.nextExists? 'disabled':''}"><h:commandLink
 					id="bn" disabled="#{!entityPageBean.nextExists}"
 					value="keyboard_arrow_right" styleClass="page-link material-icons">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
-			<li class="page-item #{!entityPageBean.nextExists? 'disabled':''}"><h:commandLink id="bl" disabled="#{!entityPageBean.nextExists}" value="skip_next"
+			<li class="page-item #{!entityPageBean.nextExists? 'disabled':''}"><h:commandLink
+					id="bl" disabled="#{!entityPageBean.nextExists}" value="skip_next"
 					styleClass="page-link material-icons">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
