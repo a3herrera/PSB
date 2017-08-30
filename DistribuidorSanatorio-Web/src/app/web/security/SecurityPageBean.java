@@ -133,7 +133,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		boolean checkOptions = true;
 		if (currentOption != null) {
 			temporal = currentOption;
-		} else if (sessionMenu != null && currentOption == null) {
+		} else if (sessionMenu != null) {
 			checkOptions = false;
 			temporal = sessionMenu;
 
@@ -227,6 +227,26 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			url = url.concat("?faces-redirect=").concat(String.valueOf(option.isRedirect()));
 			return url;
 		}
+		return "";
+	}
+
+	@Override
+	protected String add() {
+		return "";
+	}
+
+	@Override
+	protected String update() {
+		return "";
+	}
+
+	@Override
+	protected String cancel() {
+		return "";
+	}
+
+	@Override
+	protected String save() {
 		return "";
 	}
 

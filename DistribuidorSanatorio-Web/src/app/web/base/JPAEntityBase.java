@@ -36,16 +36,18 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	protected Map<String, Object> params = new HashMap<String, Object>();
 
 	protected abstract String getCreateMsg();
+
 	protected abstract String getUpdateMsg();
+
 	protected abstract String getRemoveMsg();
 
-	protected String newNR = "new";
-	protected String updateNR = "update";
-	protected String removeNR = "remove";
+	protected abstract String add();
 
-	protected String add = "add";
-	
-	
+	protected abstract String update();
+
+	protected abstract String cancel();
+
+	protected abstract String save();
 
 	public void clear() {
 		listEntity = null;
@@ -126,7 +128,29 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	public String newEntity() throws Exception {
 		entity = newInstace();
 		idEntity = null;
-		return add;
+		return add();
+	}
+
+	public String editEntity(Object id) {
+		if (id != null) {
+			setIdEntity(id);
+		}
+
+		if (entity != null) {
+			return update();
+		}
+
+		return "";
+	}
+
+	public void deleteEntity(Object id) {
+		if (id != null) {
+			setIdEntity(id);
+		}
+
+		if (entity != null) {
+			delete();
+		}
 	}
 
 	public boolean isNew() {
@@ -153,11 +177,10 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	protected String navigationOption() {
 		if (isNew()) {
 			infMsg(getCreateMsg());
-			return newNR;
 		} else {
 			infMsg(getUpdateMsg());
-			return updateNR;
 		}
+		return save();
 	}
 
 	protected boolean beforeSave() {
@@ -181,11 +204,15 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 			} catch (Exception ex) {
 				return null;
 			}
-			
-			
+
 			return navigationOption();
 		}
 		return null;
+	}
+
+	public String cancelSave() {
+		clear();
+		return cancel();
 	}
 
 	protected boolean beforeDelete() {
@@ -209,7 +236,7 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 			}
 			clear();
 			infMsg(getRemoveMsg());
-			return removeNR;
+			return cancel();
 		}
 		return null;
 	}
@@ -227,7 +254,7 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 			try {
 				beforeList();
 				listEntity = facadeHandler.findListEntity(getListQL(), page, pageSize, getParams(), getClassName());
-				countEntity = facadeHandler.countEntity(getCountQL(), page, pageSize, getParams(), getClassName());
+				countEntity = facadeHandler.countEntity(getCountQL(), getParams(), getClassName());
 			} catch (Exception ex) {
 				countEntity = 0;
 			}
@@ -239,7 +266,7 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	public int getEntityCount() {
 		if (countEntity == null) {
 			beforeFind();
-			countEntity = facadeHandler.countEntity(getCountQL(), page, pageSize, getParams(), getClassName());
+			countEntity = facadeHandler.countEntity(getCountQL(), getParams(), getClassName());
 		}
 		return countEntity;
 	}

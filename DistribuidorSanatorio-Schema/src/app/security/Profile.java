@@ -1,5 +1,7 @@
 package app.security;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -54,7 +56,7 @@ public class Profile extends Audit {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "PROFILE_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "MENU_ID") })
-	private List<Menu> options;
+	private List<Menu> options = new ArrayList<Menu>();
 
 	public long getID() {
 		return id;

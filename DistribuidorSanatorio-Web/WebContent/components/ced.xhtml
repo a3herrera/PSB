@@ -1,3 +1,4 @@
+<!--  Este componente brinda las opciones de Crear / Editar / Eliminar -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -6,24 +7,19 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf">
 	<div class="btn-group btn-group-sm" role="group"
 		aria-label="Create/Edit/Delete Component">
-
-
-		<h:commandButton action="#{entityPageBean.newEntity}" id="new"
+		<h:commandLink action="#{entityPageBean.newEntity}" id="new"
 			value="add"
 			styleClass="btn btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"
 			title="#{language['app.option.new']}" rendered="#{renderedNew}" />
 
-		<button jsf:action="#{entityPageBean.newEntity}"
-			class="btn btn-sm btn-outline-secondary material-icons"
-			data-toggle="modal" data-target="#exampleModal">edit</button>
-
-		<h:commandButton action="#{entityPageBean.newEntity}" id="update"
-			value="edit"
+		<h:commandLink action="#{entityPageBean.editEntity(id)}"
+			id="update" value="edit"
 			styleClass="btn btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"
 			title="#{language['app.option.edit']}" rendered="#{renderedUpdate}" />
-		<h:commandButton action="#{entityPageBean.delete()}" id="delete"
+			
+		<h:commandLink action="#{entityPageBean.deleteEntity(id)}" id="delete"
 			value="remove"
 			styleClass="btn  btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"

@@ -6,7 +6,7 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
-		<h:form>
+		<h:form id ="profilesF1">
 
 			<div class="row justify-content-md-center" style="margin-top: 20px;">
 				<div class="col-lg-11">
@@ -19,7 +19,8 @@
 											<span class="h6"> #{language['label.menu.profiles']} </span>
 										</div>
 										<div class="col" style="text-align: right">
-											<a class="btn btn-outline-dark btn-sm">
+											<a class="btn btn-outline-dark btn-sm"
+												jsf:action="#{ProfilesPageBean.newEntity()}">
 												#{language['app.option.new']} </a>
 										</div>
 									</div>
@@ -44,16 +45,11 @@
 														language['label.disabled']}</td>
 													<td><ui:include src="/components/ced.xhtml">
 															<ui:param name="entityPageBean"
-																value="#{ProfilesPageBean}" />
-															<ui:param name="render" value="profilesF1" />
-															<ui:param name="renderNew" value="renderNew" />
-															<ui:param name="renderUpdate" value="renderUpdate" />
-															<ui:param name="renderDelete" value="renderDelete" />
-														</ui:include>
-														<button
-															class="btn btn-sm btn-outline-secondary material-icons"
-															data-toggle="modal" data-target="#exampleModal">edit</button>
-													</td>
+																value="#{ProfilesPageBean}" />															<ui:param name="renderedNew" value="false" />
+															<ui:param name="renderedUpdate" value="true" />
+															<ui:param name="renderedDelete" value="true" />
+															<ui:param name="id" value="#{item.ID}" />
+														</ui:include></td>
 												</tr>
 											</ui:repeat>
 										</tbody>
@@ -70,7 +66,7 @@
 					</div>
 
 
-					</div>
+				</div>
 			</div>
 
 		</h:form>

@@ -1,0 +1,22 @@
+<!--  Este componente brinda las opciones de Guardar y Cancelar -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+	<div aria-label="pagination">
+		<ul class="pagination justify-content-end pagination-sm">
+			<li class="page-item"><h:commandLink
+					action="#{entityPageBean.saveEntity()}" id="save"
+					value="#{language['app.option.save']}" styleClass="page-link"
+					title="#{language['app.option.save']}">
+				</h:commandLink></li>
+			<li class="page-item"><h:commandLink
+					action="#{entityPageBean.cancelSave()}" id="cancel"
+					value="#{language['app.option.cancel']}" styleClass="page-link"
+					immediate="true" title="#{language['app.option.cancel']}">
+				</h:commandLink></li>
+		</ul>
+	</div>
+</ui:composition>

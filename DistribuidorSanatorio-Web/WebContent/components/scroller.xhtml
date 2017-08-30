@@ -8,7 +8,7 @@
 			<li
 				class="page-item #{!entityPageBean.previousExists? 'disabled':''}">
 				<h:commandLink id="bf" disabled="#{!entityPageBean.previousExists}"
-					value="skip_previous" styleClass="page-link material-icons ">
+					value="skip_previous" styleClass="page-link material-icons " action="#{entityPageBean.first}">
 					<f:ajax render="#{render}" />
 				</h:commandLink>
 			</li>
@@ -16,7 +16,7 @@
 			<li
 				class="page-item #{!entityPageBean.previousExists? 'disabled':''}"><h:commandLink
 					id="bp" disabled="#{!entityPageBean.previousExists}"
-					value="keyboard_arrow_left" styleClass="page-link material-icons">
+					value="keyboard_arrow_left" styleClass="page-link material-icons" action="#{entityPageBean.previous}">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
 
@@ -27,12 +27,12 @@
 				</h:outputFormat></li>
 			<li class="page-item #{!entityPageBean.nextExists? 'disabled':''}"><h:commandLink
 					id="bn" disabled="#{!entityPageBean.nextExists}"
-					value="keyboard_arrow_right" styleClass="page-link material-icons">
+					value="keyboard_arrow_right" styleClass="page-link material-icons" action="#{entityPageBean.next}">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
 			<li class="page-item #{!entityPageBean.nextExists? 'disabled':''}"><h:commandLink
 					id="bl" disabled="#{!entityPageBean.nextExists}" value="skip_next"
-					styleClass="page-link material-icons">
+					styleClass="page-link material-icons" action="#{entityPageBean.last}">
 					<f:ajax render="#{render}" />
 				</h:commandLink></li>
 		</ul>

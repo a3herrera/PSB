@@ -11,6 +11,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -47,15 +48,15 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	/**
 	 * 
 	 * @param QL
-	 *            JPQL a utilizarse para realizar la consulta en Base de Datos
-	 *            del listado de registros que pertenecen a la entidad que
-	 *            extiende la clase
+	 *            JPQL a utilizarse para realizar la consulta en Base de Datos del
+	 *            listado de registros que pertenecen a la entidad que extiende la
+	 *            clase
 	 * @param init
-	 *            indica en que posicion se van a estar retornando los registros
-	 *            que cumplen con el JPQL que enviado como parametro al método
+	 *            indica en que posicion se van a estar retornando los registros que
+	 *            cumplen con el JPQL que enviado como parametro al método
 	 * @param maxResult
-	 *            indica la cantidad máxima de resultados a retornar en la
-	 *            consulta realizada
+	 *            indica la cantidad máxima de resultados a retornar en la consulta
+	 *            realizada
 	 * @param params
 	 *            Parametros que solicitada el JPQL
 	 * @param em
@@ -83,15 +84,15 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	/**
 	 * 
 	 * @param QL
-	 *            NamedQuery a utilizarse para realizar la consulta en Base de
-	 *            Datos del listado de registros que pertenecen a la entidad que
-	 *            extiende la clase
+	 *            NamedQuery a utilizarse para realizar la consulta en Base de Datos
+	 *            del listado de registros que pertenecen a la entidad que extiende
+	 *            la clase
 	 * @param init
-	 *            indica en que posicion se van a estar retornando los registros
-	 *            que cumplen con el JPQL que enviado como parametro al método
+	 *            indica en que posicion se van a estar retornando los registros que
+	 *            cumplen con el JPQL que enviado como parametro al método
 	 * @param maxResult
-	 *            indica la cantidad máxima de resultados a retornar en la
-	 *            consulta realizada
+	 *            indica la cantidad máxima de resultados a retornar en la consulta
+	 *            realizada
 	 * @param params
 	 *            Parametros que solicitada el JPQL
 	 * @param em
@@ -127,6 +128,9 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		if (em == null) {
 			em = emf.createEntityManager();
 		}
+		if (!em.isOpen()) {
+			em = emf.createEntityManager();
+		}
 		return em;
 	}
 
@@ -150,6 +154,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 			throw new RuntimeException("Fail Transaction");
 		} finally {
 			em.close();
+			em = null;
 		}
 		return entity;
 	}
@@ -188,6 +193,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 			return false;
 		} finally {
 			em.close();
+			em = null;
 		}
 
 		return true;
@@ -215,9 +221,10 @@ public class FacadeHandler implements FacadeHandlerLocal {
 			em.getTransaction().rollback();
 		} finally {
 			em.close();
+			em = null;
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -246,7 +253,6 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		return (E) createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getSingleResult();
 	}
 
-	
 	/**
 	 * @see FacadeHandlerLocal#findListEntity(Class)
 	 */
@@ -315,7 +321,14 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> int countEntity(String QL, Class<E> entityClass) {
-		return ((Number) createQuery(getEntityManager(), QL, 0, 0, null, entityClass).getSingleResult()).intValue();
+		int result = 0;
+		try {
+			result = ((Number) createQuery(getEntityManager(), QL, 0, 0, null, entityClass).getSingleResult())
+					.intValue();
+		} catch (NoResultException ex) {
+			return 0;
+		}
+		return result;
 	}
 
 	/**
@@ -323,7 +336,14 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> int countEntity(String QL, Map<String, Object> params, Class<E> entityClass) {
-		return ((Number) createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getSingleResult()).intValue();
+		int result = 0;
+		try {
+			result = ((Number) createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getSingleResult())
+					.intValue();
+		} catch (NoResultException ex) {
+			return 0;
+		}
+		return result;
 	}
 
 	/**
@@ -331,8 +351,15 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> int countEntity(String QL, int init, int maxResult, Map<String, Object> params, Class<E> entityClass) {
-		return ((Number) createQuery(getEntityManager(), QL, init, maxResult, params, entityClass).getSingleResult())
-				.intValue();
+		int result = 0;
+		try {
+			result = ((Number) createQuery(getEntityManager(), QL, init, maxResult, params, entityClass)
+					.getSingleResult()).intValue();
+
+		} catch (NoResultException ex) {
+			return 0;
+		}
+		return result;
 	}
 
 	/**
