@@ -3,49 +3,72 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
-		<div class="row justify-content-md-center" style="margin-top: 20px;">
-			<h:form class="col-lg-11" id="profilesF1">
-				<div class="row">
-					<div class="col">
-						<div class="card">
-							<div class="card-header bg-secondary text-white">
-								<div class="row">
-									<div class="col">
-										<span class="h6"> #{language['label.menu.users']} </span>
-									</div>
-									<div class="col" style="text-align: right">
-										<h:commandLink value="#{language['app.option.new']}"
-											styleClass="btn btn-outline-dark btn-sm" />
+		<h:form id="f1">
+
+			<div class="row justify-content-md-center" style="margin-top: 20px;">
+				<div class="col-lg-11">
+					<div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header bg-secondary text-white">
+									<div class="row">
+										<div class="col">
+											<span class="h6"> #{language['label.menu.users']} </span>
+										</div>
+										<div class="col" style="text-align: right">
+											<a class="btn btn-outline-dark btn-sm"
+												jsf:action="#{UsersPageBean.newEntity()}">
+												#{language['app.option.new']} </a>
+										</div>
 									</div>
 								</div>
-
-							</div>
-							<div clasS="card-body">
-								<table class="table table-hover  table-sm">
-									<thead>
-										<tr>
-											<th width="50px">ID</th>
-											<th>#{language['label.name']}</th>
-											<th>#{language['label.state']}</th>
-											<th width="100px">#{language['label.options']}</th>
-										</tr>
-									</thead>
-									<tbody>
-										
-									</tbody>
-								</table>
-							</div>
-							<div class="card-footer">
-								
+								<div class="card-body">
+									<table class="table table-hover  table-sm">
+										<thead>
+											<tr>
+												<th width="50px">ID</th>
+												<th>#{language['user']}</th>
+												<th>#{language['app.profile.title']}</th>
+												<th width="100px">#{language['label.options']}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="item"
+												value="#{UsersPageBean.paginatedList}">
+												<tr>
+													<td>#{item.id}</td>
+													<td>#{item.userName}</td>
+													<td>#{item.profile.name}</td>
+													<td><ui:include src="/components/ced.xhtml">
+															<ui:param name="entityPageBean"
+																value="#{UsersPageBean}" />
+															<ui:param name="renderedNew" value="false" />
+															<ui:param name="renderedUpdate" value="true" />
+															<ui:param name="renderedDelete" value="true" />
+															<ui:param name="id" value="#{item.id}" />
+														</ui:include></td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer">
+									<ui:include src="/components/scroller.xhtml">
+										<ui:param name="entityPageBean" value="#{UsersPageBean}" />
+										<ui:param name="render" value="f1" />
+									</ui:include>
+								</div>
 							</div>
 						</div>
-
 					</div>
+
 				</div>
-			</h:form>
-		</div>
+			</div>
+
+		</h:form>
 
 	</ui:define>
 </ui:composition>

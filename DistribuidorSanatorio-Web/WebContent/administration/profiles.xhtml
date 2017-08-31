@@ -6,7 +6,7 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
-		<h:form id ="profilesF1">
+		<h:form id="profilesF1">
 
 			<div class="row justify-content-md-center" style="margin-top: 20px;">
 				<div class="col-lg-11">
@@ -45,7 +45,8 @@
 														language['label.disabled']}</td>
 													<td><ui:include src="/components/ced.xhtml">
 															<ui:param name="entityPageBean"
-																value="#{ProfilesPageBean}" />															<ui:param name="renderedNew" value="false" />
+																value="#{ProfilesPageBean}" />
+															<ui:param name="renderedNew" value="false" />
 															<ui:param name="renderedUpdate" value="true" />
 															<ui:param name="renderedDelete" value="true" />
 															<ui:param name="id" value="#{item.ID}" />
@@ -64,7 +65,6 @@
 							</div>
 						</div>
 					</div>
-
 
 				</div>
 			</div>

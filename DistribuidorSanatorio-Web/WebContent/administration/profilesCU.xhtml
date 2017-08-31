@@ -46,7 +46,21 @@
 												</h:selectOneMenu>
 											</div>
 										</div>
-										<div></div>
+										<div class="row">
+											<p:pickList value="#{ProfilesPageBean.listModel}"
+												var="options" itemLabel="#{options}" itemValue="#{options}">
+												<f:facet name="sourceCaption">
+													<h:outputLabel value="Eliminados" />
+												</f:facet>
+												<f:facet name="targetCaption">
+													<h:outputLabel value="Clasificados" />
+												</f:facet>
+												<p:column style="width:90%;">
+													<h:outputText value="#{options.label}" />
+												</p:column>
+											</p:pickList>
+
+										</div>
 									</div>
 								</div>
 								<div class="card-footer">

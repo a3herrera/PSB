@@ -51,7 +51,7 @@ public class User extends Audit {
 	@Id
 	@Column(name = "USER_ID")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
-	private long ID;
+	private long id;
 
 	
 	@Size(max = 50, min = 4, message = "{field.size.error}")
@@ -81,12 +81,12 @@ public class User extends Audit {
 	@Version
 	private long version;
 
-	public long getID() {
-		return ID;
+	public long getId() {
+		return id;
 	}
 
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getUserName() {
