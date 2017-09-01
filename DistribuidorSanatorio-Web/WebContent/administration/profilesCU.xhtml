@@ -5,7 +5,7 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:s="http://jboss.com/products/seam/taglib"
-	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
 		<h:form>
@@ -48,20 +48,12 @@
 												</h:selectOneMenu>
 											</div>
 										</div>
-										<div class="row">
-											<p:pickList value="#{ProfilesPageBean.listModel}"
-												var="options" itemLabel="#{options}" itemValue="#{options}">
-												<f:facet name="sourceCaption">
-													<h:outputLabel value="Eliminados" />
-												</f:facet>
-												<f:facet name="targetCaption">
-													<h:outputLabel value="Clasificados" />
-												</f:facet>
-												<p:column style="width:90%;">
-													<h:outputText value="#{options.label}" />
-												</p:column>
-											</p:pickList>
-
+										<div class="form-group row">
+											<p:selectManyCheckbox>
+												<f:selectItems value="#{ProfilesPageBean.options}"
+													var="item" itemLabel="#{item.label}"
+													itemValue="#{item.value}" />
+											</p:selectManyCheckbox>
 										</div>
 									</div>
 								</div>

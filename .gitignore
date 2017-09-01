@@ -27,5 +27,6 @@ hs_err_pid*
 .sonarlint/
 PSB/
 RemoteSystemsTempFiles/
-DistribuidorSanatorio-Client/.classpath
-DistribuidorSanatorio-Client/.classpath
+.classpath*
+.classpath*
+*org.eclipse.wst.common.component*

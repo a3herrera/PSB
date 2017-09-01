@@ -1,10 +1,13 @@
 package app.web.administration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
+import app.client.utilities.CollectionsUtiliy;
 import app.client.utilities.StringUtility;
 import app.security.Menu;
 import app.security.Profile;
@@ -45,11 +48,30 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 
 	private final String QL_MENU = "SELECT e from Menu e where e.isParent = true and e.parentID is null";
 
+	private List<Menu> allMenus;
+	private List<SelectItem> options;
+
 	private List<Menu> getAllMenus() {
-		return facadeHandler.findListEntity(QL_MENU, Menu.class);
+
+		if (allMenus == null) {
+			allMenus = facadeHandler.findListEntity(QL_MENU, Menu.class);
+			if (!CollectionsUtiliy.isEmptyList(allMenus)) {
+				menuLabels(allMenus);
+			}
+		}
+		return allMenus;
 	}
 
+	public List<SelectItem> getOptions() {
+		if (options == null) {
+			options = new ArrayList<SelectItem>();
+			for (Menu menu : getAllMenus()) {
+				options.add(new SelectItem(menu.getID(), menu.getLabel()));
+			}
+		}
 
+		return options;
+	}
 
 	private void menuLabels(List<Menu> menus) {
 		for (Menu menu : menus) {
