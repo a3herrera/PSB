@@ -3,7 +3,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:b="http://bootsfaces.net/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
 		<h:form id="f1">
@@ -36,15 +38,13 @@
 											</tr>
 										</thead>
 										<tbody>
-											<ui:repeat var="item"
-												value="#{UsersPageBean.paginatedList}">
+											<ui:repeat var="item" value="#{UsersPageBean.paginatedList}">
 												<tr>
 													<td>#{item.id}</td>
 													<td>#{item.userName}</td>
 													<td>#{item.profile.name}</td>
 													<td><ui:include src="/components/ced.xhtml">
-															<ui:param name="entityPageBean"
-																value="#{UsersPageBean}" />
+															<ui:param name="entityPageBean" value="#{UsersPageBean}" />
 															<ui:param name="renderedNew" value="false" />
 															<ui:param name="renderedUpdate" value="true" />
 															<ui:param name="renderedDelete" value="true" />

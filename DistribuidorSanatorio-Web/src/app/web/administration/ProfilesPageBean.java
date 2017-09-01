@@ -1,12 +1,9 @@
 package app.web.administration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import org.primefaces.model.DualListModel;
 
 import app.client.utilities.StringUtility;
 import app.security.Menu;
@@ -52,21 +49,7 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 		return facadeHandler.findListEntity(QL_MENU, Menu.class);
 	}
 
-	private DualListModel<Menu> listModel;
 
-	public DualListModel<Menu> getListModel() {
-		if (listModel == null) {
-			List<Menu> allMenus = getAllMenus();
-			menuLabels(allMenus);
-			List<Menu> profilesMenus = new ArrayList<Menu>();
-			listModel = new DualListModel<Menu>(allMenus, profilesMenus);
-		}
-		return listModel;
-	}
-
-	public void setListModel(DualListModel<Menu> listModel) {
-		this.listModel = listModel;
-	}
 
 	private void menuLabels(List<Menu> menus) {
 		for (Menu menu : menus) {
@@ -87,21 +70,4 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 
 	}
 
-	@Override
-	public void clear() {
-		super.clear();
-		listModel = null;
-	}
-
-	@Override
-	protected void afterSave() {
-		super.afterSave();
-		listModel = null;
-	}
-
-	@Override
-	protected void afterDelete() {
-		super.afterDelete();
-		listModel = null;
-	}
 }
