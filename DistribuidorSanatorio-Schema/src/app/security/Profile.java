@@ -3,6 +3,7 @@ package app.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +53,8 @@ public class Profile extends Audit {
 	@Version
 	private long version;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
 	@JoinTable(name = "PROFILE_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "MENU_ID") })
 	private List<Menu> options = new ArrayList<Menu>();

@@ -38,6 +38,7 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 
 	@Override
 	protected String cancel() {
+		entityOptions = null;
 		return PAGE_MAIN;
 	}
 
@@ -46,7 +47,7 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 		return PAGE_MAIN;
 	}
 
-	private final String QL_MENU = "SELECT e from Menu e where e.isParent = true and e.parentID is null";
+	private static final String QL_MENU = "SELECT e from Menu e where e.isParent = true and e.parentID is null order by e.id";
 
 	private List<Menu> allMenus;
 	private List<SelectItem> options;
@@ -73,6 +74,24 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 		return options;
 	}
 
+	private String[] entityOptions;
+
+	public String[] getEntityOptions() {
+		if (entityOptions == null) {
+			List<String> temporal = new ArrayList<String>();
+			for (Menu option : entity.getOptions()) {
+				temporal.add(String.valueOf(option.getID()));
+			}
+			entityOptions = new String[temporal.size()];
+			entityOptions = temporal.toArray(entityOptions);
+		}
+		return entityOptions;
+	}
+
+	public void setEntityOptions(String[] entityOptions) {
+		this.entityOptions = entityOptions;
+	}
+
 	private void menuLabels(List<Menu> menus) {
 		for (Menu menu : menus) {
 			assignLabel(menu);
@@ -92,4 +111,36 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 
 	}
 
+	@Override
+	protected boolean beforeSave() {
+		entity.setOptions(new ArrayList<Menu>(getNewOptions()));
+		return super.beforeSave();
+	}
+
+	@Override
+	protected void afterSave() {
+		entityOptions = null;
+		super.afterSave();
+	}
+
+	@Override
+	public void clear() {
+		entityOptions = null;
+		super.clear();
+	}
+
+	private List<Menu> getNewOptions() {
+		List<Menu> newOptions = new ArrayList<Menu>();
+
+		for (String id : entityOptions) {
+			Long temporal = Long.valueOf(id);
+
+			for (Menu option : getAllMenus()) {
+				if (temporal == option.getID()) {
+					newOptions.add(option);
+				}
+			}
+		}
+		return newOptions;
+	}
 }

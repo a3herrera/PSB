@@ -19,6 +19,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import app.client.utilities.CollectionsUtiliy;
 import app.client.utilities.Constants;
 import app.interfaces.base.FacadeHandlerLocal;
@@ -32,6 +35,8 @@ import app.interfaces.base.FacadeHandlerLocal;
 public class FacadeHandler implements FacadeHandlerLocal {
 
 	private EntityManager em;
+
+	private static final Logger logger = LogManager.getLogger(FacadeHandler.class.getName());
 
 	@PersistenceUnit(unitName = Constants.PERSISTENCE_NAME, name = Constants.PERSISTENCE_NAME)
 	private EntityManagerFactory emf;
@@ -151,6 +156,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 			em.getTransaction().commit();
 		} catch (Exception ex) {
 			em.getTransaction().rollback();
+			logger.error(ex);
 			throw new RuntimeException("Fail Transaction");
 		} finally {
 			em.close();

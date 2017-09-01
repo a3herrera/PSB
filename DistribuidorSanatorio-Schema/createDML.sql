@@ -15,6 +15,8 @@ INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='3' WHERE `MENU_KEY`='MENU_ID';
 INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('3', '/administration/users.xhtml', '1', 'Usuarios', '1', 'label.menu.users', '0', '1', '1',sysdate());
 
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='4' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('4', '/internals/internals.xhtml', '1', 'Internals', '1', 'label.menu.internal', '1', '1',sysdate());
 
 
 INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '1');
