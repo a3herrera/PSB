@@ -17,7 +17,13 @@
 							<div class="card">
 								<div class="card-header bg-secondary text-white">
 									<div class="row">
-										<div class="col"></div>
+										<div class="col">
+											<span class="h6"> <h:outputFormat
+													value="#{UsersPageBean.new? language['app.option.addRecord']: language['app.option.updateRecord']}">
+													<f:param value="#{language['user']}" />
+												</h:outputFormat>
+											</span>
+										</div>
 									</div>
 								</div>
 								<div class="card-body">
@@ -25,13 +31,39 @@
 										<div class="form-group row">
 											<label for="name" class="col-sm-3 col-form-label">
 												#{language['label.name']} </label>
-											<div class="col-sm-9"></div>
+											<div class="col-sm-9">
+												<input type="text"
+													jsf:value="#{UsersPageBean.entity.userName}"
+													class="form-control" />
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="name" class="col-sm-3 col-form-label">
+												#{language['password']} </label>
+											<div class="col-sm-9">
+												<input type="password"
+													jsf:value="#{UsersPageBean.entity.passWord}"
+													class="form-control" />
+											</div>
 										</div>
 										<div class="form-group row">
 											<label class="col-sm-3 col-form-label" for="state">#{language['label.state']}</label>
-											<div class="col-sm-9"></div>
+											<div class="col-sm-9">
+												<h:selectOneMenu value="#{UsersPageBean.entity.state}"
+													styleClass="form-control">
+													<f:selectItems value="#{UsersPageBean.states}" />
+												</h:selectOneMenu>
+											</div>
 										</div>
-										<div class="row"></div>
+										<div class="form-group row">
+											<label class="col-sm-3 col-form-label" for="state">#{language['app.profile.title']}</label>
+											<div class="col-sm-9">
+												<h:selectOneMenu value="#{UsersPageBean.entity.profile}"
+													styleClass="form-control">
+													<f:selectItems value="#{UsersPageBean.profilesUI}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="card-footer">

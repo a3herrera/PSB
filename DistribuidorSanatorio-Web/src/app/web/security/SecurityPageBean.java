@@ -49,7 +49,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	@Override
 	protected boolean eligibilities() throws Exception {
 		if (resultEntity != null) {
-			if (resultEntity.getState() != UserStates.Active) {
+			if (resultEntity.getState() != UserStates.ACTIVE) {
 				warnMsg(getMessages().getString(ConstantsMessages.MSG_LOGIN_USER_ERROR));
 				return false;
 			}

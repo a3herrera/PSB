@@ -4,6 +4,9 @@ import java.util.ResourceBundle;
 
 import javax.faces.bean.ManagedProperty;
 
+import app.client.utilities.StringUtility;
+import app.schema.enumerated.UserStates;
+
 public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 
 	/**
@@ -32,16 +35,31 @@ public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 	public void setLanguage(ResourceBundle language) {
 		this.language = language;
 	}
-	
-	protected  String getCreateMsg() {
+
+	protected String getCreateMsg() {
 		return getMessages().getString("info.message.new");
 	}
 
-	protected  String getUpdateMsg() {
+	protected String getUpdateMsg() {
 		return getMessages().getString("info.message.update");
 	}
-	
-	protected  String getRemoveMsg() {
+
+	protected String getRemoveMsg() {
 		return getMessages().getString("info.message.remove");
+	}
+
+	
+
+	public String getLabel(String key, String defaultValue) {
+		if (StringUtility.isEmpty(key)) {
+			return defaultValue;
+		} else {
+			String temporal = getLanguage().getString(key);
+			if (StringUtility.isEmpty(temporal)) {
+				return defaultValue;
+			} else {
+				return temporal;
+			}
+		}
 	}
 }
