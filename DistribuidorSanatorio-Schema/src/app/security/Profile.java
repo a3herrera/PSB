@@ -18,6 +18,8 @@ import javax.persistence.TableGenerator;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import app.schema.embedable.Audit;
 
 /**
@@ -44,6 +46,7 @@ public class Profile extends Audit {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long id;
 
+	@NotEmpty(message = "{field.not.null}")
 	@Column(name = "NAME", nullable = false, length = 30)
 	private String name;
 

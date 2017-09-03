@@ -1,7 +1,10 @@
 package app.web.administration;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.MissingResourceException;
 
 import javax.faces.bean.ManagedBean;
@@ -11,6 +14,7 @@ import javax.faces.model.SelectItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import app.client.enums.EncryptionTypes;
 import app.client.utilities.StringUtility;
 import app.schema.enumerated.UserStates;
 import app.security.Profile;
@@ -29,7 +33,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	private static final long serialVersionUID = 8961479372329330554L;
 
-	private Logger logger = LogManager.getLogger(SecurityPageBean.class.getName());
+	private static final Logger logger = LogManager.getLogger(SecurityPageBean.class.getName());
 
 	private static final String PAGE_EDIT = "/administration/usersCU.xhtml?faces-redirect=false";
 	private static final String PAGE_MAIN = "/administration/users.xhtml?faces-redirect=true";
@@ -51,6 +55,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	@Override
 	protected String save() {
+		profileId = null;
 		return PAGE_MAIN;
 	}
 
@@ -73,7 +78,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 		if (profilesUI == null) {
 			profilesUI = new ArrayList<SelectItem>();
 			for (Profile profile : getAllProfiles()) {
-				profilesUI.add(new SelectItem(profile, profile.getName()));
+				profilesUI.add(new SelectItem(profile.getID(), profile.getName()));
 			}
 		}
 		return profilesUI;
@@ -113,4 +118,73 @@ public class UsersPageBean extends JPAEntityBean<User> {
 			return state.toString();
 		}
 	}
+
+	private static final String QL_CHECK_SECURITY_TOKEN = "Select count(e) from User e where e.id = :ID and e.passWord = :password";
+	private static final String QL_CHECK_EXIST_USER = "Select count(e) from User e where e.userName = :userName";
+
+	@Override
+	protected boolean beforeSave() {
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+
+		parameters.put("userName", getEntity().getUserName().trim());
+		int existUser = facadeHandler.countEntity(QL_CHECK_EXIST_USER, parameters, User.class);
+
+		parameters = new HashMap<String, Object>();
+		parameters.put("ID", getEntity().getId());
+		parameters.put("password", getEntity().getPassWord());
+		int count = facadeHandler.countEntity(QL_CHECK_SECURITY_TOKEN, parameters, User.class);
+
+		String encryption = "";
+		try {
+			encryption = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
+		} catch (NoSuchAlgorithmException e) {
+			logger.error("Error to encrypt the password");
+			return false;
+		}
+
+		if (isNew()) {
+			if (existUser > 0) {
+				warnMsg(getMessages().getString("info.message.user.exists"));
+			}
+			getEntity().setPassWord(encryption);
+
+		} else {
+			// Pendiente de verificar si el usuario ya se encuentra duplicado en el sistema
+			if (count <= 0) {
+				getEntity().setPassWord(encryption);
+			}
+		}
+
+		if (profileId == null) {
+			warnMsg(getMessages().getString("info.message.user.profile.required"));
+		} else {
+			for (Profile profile : getAllProfiles()) {
+				if (profile.getID() == profileId) {
+					entity.setProfile(profile);
+				}
+			}
+		}
+		return super.beforeSave();
+	}
+
+	private Long profileId;
+
+	public Long getProfileId() {
+		if (profileId == null) {
+			if (entity != null && entity.getProfile() != null) {
+				profileId = entity.getProfile().getID();
+			} else if (entity == null) {
+				profileId = 0l;
+			}
+
+		}
+
+		return profileId;
+	}
+
+	public void setProfileId(Long profileId) {
+		this.profileId = profileId;
+	}
+
 }

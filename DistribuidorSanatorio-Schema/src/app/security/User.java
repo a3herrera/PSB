@@ -24,6 +24,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import app.schema.embedable.Audit;
@@ -54,18 +55,19 @@ public class User extends Audit {
 	private long id;
 
 	
-	@Size(max = 50, min = 4, message = "{field.size.error}")
 	@NotNull(message = "{field.not.null}")
+	@NotBlank(message = "{field.not.null}")
+	@Size(max = 50, min = 4, message = "{field.size.error}")
 	@Column(name = "USER_NAME", nullable = false, length = 50)
 	private String userName;
 
 	@NotNull(message = "{field.not.null}")
+	@NotBlank(message = "{field.not.null}")
 	@Size(max = 150, min = 4, message = "{field.size.error}")
 	@Column(name = "PASSWORD", nullable = false, length = 150) 
 	private String passWord;
 
 	@NotNull(message = "{field.not.null}")
-	@NotEmpty(message = "{field.not.null}")
 	@Enumerated(EnumType.STRING)
 	@Column(name = "STATE", nullable = false)
 	private UserStates state;
