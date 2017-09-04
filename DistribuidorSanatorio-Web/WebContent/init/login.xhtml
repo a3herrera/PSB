@@ -5,8 +5,7 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:s="http://jboss.com/products/seam/taglib"
-	xmlns:p="http://primefaces.org/ui"
-	template="/base/template.xhtml">
+	xmlns:p="http://primefaces.org/ui" template="/base/template.xhtml">
 
 	<ui:define name="pageTitle">
 		<title>#{language['login']}</title>
@@ -28,21 +27,25 @@
 									<p>
 										<input type="text" Placeholder="#{language['user']}"
 											jsf:id="user" jsf:value="#{SecurityPageBean.entity.userName}" />
+										<h:message for="user" styleClass="alert"
+											style="font-size:11px;margin-left:-20px;" />
 									</p>
-									<h:message for="user" />
 									<p>
 										<input type="password" Placeholder="#{language['password']}"
 											jsf:value="#{SecurityPageBean.entity.passWord}"
 											jsf:id="password" />
+										<h:message for="password" styleClass="alert"
+											style="font-size:11px;margin-left:-20px;" />
 									</p>
-									<h:message for="password" />
+
 									<div>
 										<button class="btn btn-outline-dark btn-sm"
 											jsf:process="@this" jsf:action="#{SecurityPageBean.login()}">
 											#{language['login']}</button>
 										<a class="badge">#{language['password.reset']}</a>
 									</div>
-									<h:messages globalOnly="true" />
+									<h:messages globalOnly="true" styleClass="alert"
+										style="list-style-type: none;font-size:12px;margin-left:-20px;" />
 								</fieldset>
 								<div class="clearfix"></div>
 							</h:form>

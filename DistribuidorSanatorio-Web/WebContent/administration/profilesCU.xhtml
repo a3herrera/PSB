@@ -32,15 +32,25 @@
 											<label for="name" class="col-sm-3 col-form-label">
 												#{language['label.name']} </label>
 											<div class="col-sm-9">
-												<input class="form-control" type="text" id="name"
+												<input class="form-control" type="text" jsf:id="name"
 													jsf:value="#{ProfilesPageBean.entity.name}" />
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-sm-3" />
+											<div class="col-sm-9">
+												<h:message for="name" role="alert" styleClass="alert"
+													infoClass="alert alert-info"
+													warnClass="alert alert-warning"
+													errorClass="alert alert-danger"
+													fatalClass="alert alert-danger" />
 											</div>
 										</div>
 										<div class="form-group row">
 											<label class="col-sm-3 col-form-label" for="state">#{language['label.state']}</label>
 											<div class="col-sm-9">
 												<h:selectOneMenu value="#{ProfilesPageBean.entity.state}"
-													styleClass="form-control">
+													styleClass="form-control" id="state">
 													<f:selectItem itemValue="true"
 														itemLabel="#{language['label.enabled']}" />
 													<f:selectItem itemValue="false"
@@ -49,11 +59,21 @@
 											</div>
 										</div>
 										<div class="form-group row">
+											<div class="col-sm-3" />
+											<div class="col-sm-9">
+												<h:message for="state" role="alert" styleClass="alert"
+													infoClass="alert alert-info"
+													warnClass="alert alert-warning"
+													errorClass="alert alert-danger"
+													fatalClass="alert alert-danger" />
+											</div>
+										</div>
+										<div class="form-group row">
 											<div class="col">
 												<div class="card">
 													<div class="card-header">#{language['label.access']}</div>
 													<div class="card-body">
-														<p:selectManyCheckbox layout="grid" columns="2"
+														<p:selectManyCheckbox layout="grid" columns="2" id="access"
 															value="#{ProfilesPageBean.entityOptions}"
 															style="width:100%;">
 															<f:selectItems value="#{ProfilesPageBean.options}"
@@ -62,6 +82,15 @@
 														</p:selectManyCheckbox>
 													</div>
 												</div>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col">
+												<h:message for="access" role="alert" styleClass="alert"
+													infoClass="alert alert-info"
+													warnClass="alert alert-warning"
+													errorClass="alert alert-danger"
+													fatalClass="alert alert-danger" />
 											</div>
 										</div>
 									</div>

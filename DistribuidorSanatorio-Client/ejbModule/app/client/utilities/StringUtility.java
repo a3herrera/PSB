@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import app.client.enums.EncryptionTypes;
 
 /**
@@ -16,6 +19,8 @@ import app.client.enums.EncryptionTypes;
  * @since 1.0
  */
 public class StringUtility {
+
+	private static final Logger logger = LogManager.getLogger(StringUtility.class.getName());
 
 	private StringUtility() {
 		// This constructor is private for avoid class initialization
@@ -181,7 +186,7 @@ public class StringUtility {
 	public static byte[] decode(final String value) {
 		final int length = value.length();
 		if (length % 2 != 0) {
-			return null;
+			return new byte[0];
 		}
 
 		byte[] bytes = new byte[length / 2];
@@ -209,8 +214,8 @@ public class StringUtility {
 
 	/**
 	 * <p>
-	 * Convert a byte array into a printable format containing a {@link String}
-	 * of hex digit characters (two per byte).
+	 * Convert a byte array into a printable format containing a {@link String} of
+	 * hex digit characters (two per byte).
 	 * </p>
 	 */
 	public static String encode(final byte[] bytes) {
@@ -251,18 +256,24 @@ public class StringUtility {
 	 * @param message
 	 *            texto a encriptar
 	 * @param algorithm
-	 *            algoritmo de encriptacion, puede ser: MD2, MD5, SHA-1,
-	 *            SHA-256, SHA-384, SHA-512
+	 *            algoritmo de encriptacion, puede ser: MD2, MD5, SHA-1, SHA-256,
+	 *            SHA-384, SHA-512
 	 * @return mensaje encriptado
 	 */
-	public static String encryptMessage(final String message, EncryptionTypes type) throws NoSuchAlgorithmException {
+	public static String encryptMessage(final String message, EncryptionTypes type) {
 		byte[] digest = null;
 		byte[] buffer = message.getBytes();
-		MessageDigest messageDigest = MessageDigest.getInstance(type.getType());
-		messageDigest.reset();
-		messageDigest.update(buffer);
-		digest = messageDigest.digest();
-		return toHexadecimal(digest);
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance(type.getType());
+			messageDigest.reset();
+			messageDigest.update(buffer);
+			digest = messageDigest.digest();
+			return toHexadecimal(digest);
+		} catch (NoSuchAlgorithmException e) {
+			logger.error("Fail to decode Message ".concat(e.getMessage()));
+		}
+		return "";
 	}
 
 	/***
@@ -273,32 +284,33 @@ public class StringUtility {
 	 * @return String creado a partir de <code>digest</code>
 	 */
 	private static String toHexadecimal(byte[] digest) {
-		String hash = "";
+		StringBuilder hash = new StringBuilder();
 		for (byte aux : digest) {
 			int b = aux & 0xff;
 			if (Integer.toHexString(b).length() == 1)
-				hash += "0";
-			hash += Integer.toHexString(b);
+				hash.append("0");
+
+			hash.append(Integer.toHexString(b));
 		}
-		return hash;
+		return hash.toString();
 	}
-	
+
 	public static String concatValues(boolean spaceBetween, final String... values) {
-		if(CollectionsUtiliy.isEmptyArray(values)) {
+		if (CollectionsUtiliy.isEmptyArray(values)) {
 			return "";
 		}
-		
+
 		StringBuilder builder = new StringBuilder();
-		for(String value: values) {
-			if(!isEmpty(value)) {				
-				if(!isEmpty(builder.toString()) && spaceBetween) {
+		for (String value : values) {
+			if (!isEmpty(value)) {
+				if (!isEmpty(builder.toString()) && spaceBetween) {
 					builder.append(" ");
 				}
-				
+
 				builder.append(value);
 			}
 		}
-		
+
 		return builder.toString();
 	}
 }

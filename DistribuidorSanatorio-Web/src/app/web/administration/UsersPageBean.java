@@ -1,6 +1,5 @@
 package app.web.administration;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,53 +118,57 @@ public class UsersPageBean extends JPAEntityBean<User> {
 		}
 	}
 
-	private static final String QL_CHECK_SECURITY_TOKEN = "Select count(e) from User e where e.id = :ID and e.passWord = :password";
-	private static final String QL_CHECK_EXIST_USER = "Select count(e) from User e where e.userName = :userName";
+	private static final String QL_CHECK_SECURITY_TOKEN = "Select count(e) from User e where e.id = :id and e.passWord = :password";
+	private static final String QL_CHECK_EXIST_USER = "Select count(e) from User e where upper(e.userName) = :userName";
+	private static final String QL_CHECK_EXIST_USER_EDIT = "Select count(e) from User e where upper(e.userName) = :userName and e.id <> :id";
 
 	@Override
 	protected boolean beforeSave() {
 
+		int usersCount = 0;
 		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("userName", entity.getUserName().trim().toUpperCase());
 
-		parameters.put("userName", getEntity().getUserName().trim());
-		int existUser = facadeHandler.countEntity(QL_CHECK_EXIST_USER, parameters, User.class);
+		if (isNew()) {
+			usersCount = facadeHandler.countEntity(QL_CHECK_EXIST_USER, parameters, User.class);
+		} else {
+			parameters.put("id", entity.getId());
+			usersCount = facadeHandler.countEntity(QL_CHECK_EXIST_USER_EDIT, parameters, User.class);
+		}
 
-		parameters = new HashMap<String, Object>();
-		parameters.put("ID", getEntity().getId());
-		parameters.put("password", getEntity().getPassWord());
-		int count = facadeHandler.countEntity(QL_CHECK_SECURITY_TOKEN, parameters, User.class);
-
-		String encryption = "";
-		try {
-			encryption = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("Error to encrypt the password");
+		if (usersCount > 0) {
+			warnMsg(getMessages().getString("info.message.user.exists"));
 			return false;
 		}
 
-		if (isNew()) {
-			if (existUser > 0) {
-				warnMsg(getMessages().getString("info.message.user.exists"));
-			}
-			getEntity().setPassWord(encryption);
+		boolean state = true;
+		if (!isNew()) {
+			parameters = new HashMap<String, Object>();
+			parameters.put("id", entity.getId());
+			parameters.put("password", entity.getPassWord());
+			int result = facadeHandler.countEntity(QL_CHECK_SECURITY_TOKEN, parameters, User.class);
+			if (result <= 0)
+				state = passwordElegibility();
 
 		} else {
-			// Pendiente de verificar si el usuario ya se encuentra duplicado en el sistema
-			if (count <= 0) {
-				getEntity().setPassWord(encryption);
-			}
+			state = passwordElegibility();
 		}
 
-		if (profileId == null) {
-			warnMsg(getMessages().getString("info.message.user.profile.required"));
-		} else {
-			for (Profile profile : getAllProfiles()) {
-				if (profile.getID() == profileId) {
-					entity.setProfile(profile);
-				}
-			}
-		}
+		if (!state)
+			return false;
+
 		return super.beforeSave();
+	}
+
+	private boolean passwordElegibility() {
+		String encryptToken = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
+		if (StringUtility.isEmpty(encryptToken)) {
+			logger.error("Fail to Encrypt Pass / User id".concat(String.valueOf(entity.getId())));
+			errorMsg(getMessages().getString("error.message.saveRecord"));
+			return false;
+		}
+		entity.setPassWord(encryptToken);
+		return true;
 	}
 
 	private Long profileId;

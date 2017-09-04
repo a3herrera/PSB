@@ -136,8 +136,19 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		if (!em.isOpen()) {
 			em = emf.createEntityManager();
 		}
+		
+		em.clear();
 		return em;
 	}
+
+//	private void closeEntityManager() {
+//		if (em != null) {
+//			if (em.isOpen())
+//				em.close();
+//			
+//			em.clear();
+//		}
+//	}
 
 	private <E> E requestHandler(E entity, boolean isNew) throws Exception {
 		if (entity == null) {
@@ -238,7 +249,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> E findEntity(Object id, Class<E> entityClass) {
-		return em.find(entityClass, id);
+		return getEntityManager().find(entityClass, id);
 	}
 
 	/**

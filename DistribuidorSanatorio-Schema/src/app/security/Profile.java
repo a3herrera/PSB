@@ -56,7 +56,7 @@ public class Profile extends Audit {
 	@Version
 	private long version;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE,
 			CascadeType.REFRESH })
 	@JoinTable(name = "PROFILE_OPTIONS", joinColumns = { @JoinColumn(name = "PROFILE_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "MENU_ID") })

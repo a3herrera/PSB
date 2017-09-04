@@ -1,7 +1,9 @@
 package app.web.administration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,11 +41,14 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 	@Override
 	protected String cancel() {
 		entityOptions = null;
+		entity = null;
+		clear();
 		return PAGE_MAIN;
 	}
 
 	@Override
 	protected String save() {
+		entity = null;
 		return PAGE_MAIN;
 	}
 
@@ -111,16 +116,40 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 
 	}
 
+	private static final String QL_PROFILE_FOR_NAME = "Select count(e) from Profile e where e.name = :name";
+	private static final String QL_PROFILE_FOR_NAME_EDIT = "Select count(e) from Profile e where e.name = :name and e.id <> :id";
+
 	@Override
 	protected boolean beforeSave() {
-		entity.setOptions(new ArrayList<Menu>(getNewOptions()));
-		return super.beforeSave();
+
+		if (CollectionsUtiliy.isEmptyList(getNewOptions())) {
+			warningMsg("access", getMessages().getString("info.message.profile.nonAccess"));
+			return false;
+		} else {
+			entity.setOptions(new ArrayList<Menu>(getNewOptions()));
+		}
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("name", entity.getName());
+		int count = 0;
+		if (isNew()) {
+			count = facadeHandler.countEntity(QL_PROFILE_FOR_NAME, parameters, Profile.class);
+		} else {
+			parameters.put("id", entity.getID());
+			count = facadeHandler.countEntity(QL_PROFILE_FOR_NAME_EDIT, parameters, Profile.class);
+		}
+
+		if (count > 0) {
+			warnMsg(getMessages().getString("info.message.profile.exist"));
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
 	protected void afterSave() {
 		entityOptions = null;
-		super.afterSave();
 	}
 
 	@Override

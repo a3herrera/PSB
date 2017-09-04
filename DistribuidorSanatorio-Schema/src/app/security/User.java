@@ -25,7 +25,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import app.schema.embedable.Audit;
 import app.schema.enumerated.UserStates;
@@ -72,6 +71,7 @@ public class User extends Audit {
 	@Column(name = "STATE", nullable = false)
 	private UserStates state;
 
+	@NotNull(message = "{field.not.null}")
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
 	@JoinColumn(name = "PROFILE_ID", updatable = true, insertable = true)
 	private Profile profile;
