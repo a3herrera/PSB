@@ -23,4 +23,5 @@ public class ConstantsMessages {
 	public static final String MSG_INFO_NEW = "info.message.new";
 	public static final String MSG_INFO_UPDATE = "info.message.update";
 	public static final String MSG_INFO_REMOVE = "info.message.remove";
+	
 }

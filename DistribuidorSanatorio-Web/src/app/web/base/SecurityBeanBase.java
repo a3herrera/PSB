@@ -75,6 +75,10 @@ public abstract class SecurityBeanBase<E> extends JPAEntityBean<E> {
 		getSessionScope().put(Constants.USER, resultEntity);
 		return isLoggedNR;
 	}
+	
+	public String receiverPass() throws Exception {
+		return null;
+	}
 
 	public String logOut() {
 		setLogged(false);

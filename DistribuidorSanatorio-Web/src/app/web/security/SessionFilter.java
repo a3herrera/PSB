@@ -101,6 +101,7 @@ public class SessionFilter implements Filter {
 
 	public boolean defaultAllowed(String uri) {
 		return uri.indexOf(Constants.LOGIN_PAGE) > 0;
+		// AGREGAR AQUI PARA VER SI LA PERMITE 
 	}
 
 	public boolean allwaysAllow(String uri) {

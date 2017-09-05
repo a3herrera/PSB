@@ -19,6 +19,8 @@ import app.schema.enumerated.UserStates;
 import app.security.Menu;
 import app.security.Profile;
 import app.security.User;
+import app.web.administration.Controlador;
+import app.web.administration.Correo;
 import app.web.base.SecurityBeanBase;
 
 @SessionScoped
@@ -30,6 +32,10 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	 */
 	private static final long serialVersionUID = -6193822077008977126L;
 	private static final Logger log = LogManager.getLogger(SecurityPageBean.class.getName());
+	private String userName;
+	private String subject = "Mensaje de Prueba";
+	private String message = "Este es el cuerpo del mensaje, aqui debe ir la contraseñia de recuperación";
+	private String mail = "rodas-alex@hotmail.com";
 
 	public SecurityPageBean() {
 		entity = new User();
@@ -105,6 +111,22 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			}
 		}
 		return allOptions;
+	}
+	
+	@Override
+	public String receiverPass() throws Exception {
+		Correo c = new Correo();
+		c.setContrasenia(Constants.CNST_PASSWORD);
+		c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
+		c.setAsunto(getSubject());
+		c.setMensaje(getMessage());
+		c.setDestino(getMail());
+		Controlador co = new Controlador();
+		if (co.enviarCorreo(c)) {
+			log.debug("Mail send successfully");
+		} else 
+			log.error("Error send to Message ");
+		return null;
 	}
 
 	private List<Menu> mainOptions = Collections.emptyList();
@@ -249,5 +271,38 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	protected String save() {
 		return "";
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 
 }
