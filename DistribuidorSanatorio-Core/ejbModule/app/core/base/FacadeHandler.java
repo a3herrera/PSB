@@ -1,5 +1,6 @@
 package app.core.base;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import app.client.utilities.CollectionsUtiliy;
 import app.client.utilities.Constants;
 import app.interfaces.base.FacadeHandlerLocal;
@@ -35,8 +33,6 @@ import app.interfaces.base.FacadeHandlerLocal;
 public class FacadeHandler implements FacadeHandlerLocal {
 
 	private EntityManager em;
-
-	private static final Logger logger = LogManager.getLogger(FacadeHandler.class.getName());
 
 	@PersistenceUnit(unitName = Constants.PERSISTENCE_NAME, name = Constants.PERSISTENCE_NAME)
 	private EntityManagerFactory emf;
@@ -52,7 +48,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 
 	/**
 	 * 
-	 * @param QL
+	 * @param jpql
 	 *            JPQL a utilizarse para realizar la consulta en Base de Datos del
 	 *            listado de registros que pertenecen a la entidad que extiende la
 	 *            clase
@@ -64,13 +60,13 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 *            realizada
 	 * @param params
 	 *            Parametros que solicitada el JPQL
-	 * @param em
+	 * @param entityManager
 	 *            EntityManager
 	 * @return
 	 */
-	private static <E> Query createQuery(EntityManager em, String QL, int init, int maxResult,
+	private static <E> Query createQuery(EntityManager entityManager, String jpql, int init, int maxResult,
 			Map<String, Object> params, Class<E> entityClass) {
-		Query query = em.createQuery(QL, entityClass);
+		Query query = entityManager.createQuery(jpql, entityClass);
 		if (init > 0 && maxResult > 0) {
 			query.setFirstResult(maxResult * (init - 1));
 		}
@@ -105,9 +101,9 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	private static <E> TypedQuery createNamedQuery(EntityManager em, String NamedQuery, int init, int maxResult,
+	private static <E> TypedQuery createNamedQuery(EntityManager em, String namedJpql, int init, int maxResult,
 			Map<String, Object> params, Map<String, Object> hintsParams, Class<E> entityClass) {
-		TypedQuery<E> namedQuery = em.createNamedQuery(NamedQuery, entityClass);
+		TypedQuery<E> namedQuery = em.createNamedQuery(namedJpql, entityClass);
 		if (init > 0 && maxResult > 0) {
 			namedQuery.setFirstResult(maxResult * (init - 1));
 		}
@@ -136,42 +132,32 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		if (!em.isOpen()) {
 			em = emf.createEntityManager();
 		}
-		
+
 		em.clear();
 		return em;
 	}
 
-//	private void closeEntityManager() {
-//		if (em != null) {
-//			if (em.isOpen())
-//				em.close();
-//			
-//			em.clear();
-//		}
-//	}
-
-	private <E> E requestHandler(E entity, boolean isNew) throws Exception {
+	private <E> E requestHandler(E entity, boolean isNew) throws RuntimeException {
 		if (entity == null) {
 			return null;
 		}
 
-		EntityManager em = getEntityManager();
+		EntityManager entityManager = getEntityManager();
 		try {
-			em.getTransaction().begin();
+			entityManager.getTransaction().begin();
 			if (isNew) {
-				em.persist(entity);
+				entityManager.persist(entity);
 			} else {
-				em.merge(entity);
+				entityManager.merge(entity);
 			}
-			em.flush();
-			em.getTransaction().commit();
+			entityManager.flush();
+			entityManager.getTransaction().commit();
 		} catch (Exception ex) {
-			em.getTransaction().rollback();
-			logger.error(ex);
+			entityManager.getTransaction().rollback();
 			throw new RuntimeException("Fail Transaction");
 		} finally {
-			em.close();
-			em = null;
+			entityManager.close();
+			entityManager = null;
 		}
 		return entity;
 	}
@@ -200,17 +186,17 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		if (entity == null) {
 			return true;
 		}
-		EntityManager em = getEntityManager();
+		EntityManager entityManager = getEntityManager();
 		try {
-			em.getTransaction().begin();
-			em.remove(entity);
-			em.getTransaction().commit();
+			entityManager.getTransaction().begin();
+			entityManager.remove(entity);
+			entityManager.getTransaction().commit();
 		} catch (Exception ex) {
-			em.getTransaction().rollback();
+			entityManager.getTransaction().rollback();
 			return false;
 		} finally {
-			em.close();
-			em = null;
+			entityManager.close();
+			entityManager = null;
 		}
 
 		return true;
@@ -224,21 +210,21 @@ public class FacadeHandler implements FacadeHandlerLocal {
 		if (id == null || entityClass == null) {
 			return true;
 		}
-		EntityManager em = getEntityManager();
+		EntityManager entityManager = getEntityManager();
 		try {
 			E entity = findEntity(id, entityClass);
 			if (entity != null) {
-				em.getTransaction().begin();
-				em.remove(entity);
-				em.getTransaction().commit();
+				entityManager.getTransaction().begin();
+				entityManager.remove(entity);
+				entityManager.getTransaction().commit();
 			} else {
 				return true;
 			}
 		} catch (Exception ex) {
-			em.getTransaction().rollback();
+			entityManager.getTransaction().rollback();
 		} finally {
-			em.close();
-			em = null;
+			entityManager.close();
+			entityManager = null;
 		}
 
 		return false;
@@ -257,8 +243,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> E findEntity(String QL, Class<E> entityClass) {
-		return (E) createQuery(getEntityManager(), QL, 0, 0, null, entityClass).getSingleResult();
+	public <E> E findEntity(String jpql, Class<E> entityClass) {
+		return (E) createQuery(getEntityManager(), jpql, 0, 0, Collections.emptyMap(), entityClass).getSingleResult();
 	}
 
 	/**
@@ -266,8 +252,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> E findEntity(String QL, Map<String, Object> params, Class<E> entityClass) {
-		return (E) createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getSingleResult();
+	public <E> E findEntity(String jpql, Map<String, Object> params, Class<E> entityClass) {
+		return (E) createQuery(getEntityManager(), jpql, 0, 0, params, entityClass).getSingleResult();
 	}
 
 	/**
@@ -276,10 +262,10 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E> List<E> findListEntity(Class<E> entityClass) {
-		EntityManager em = getEntityManager();
-		CriteriaQuery<E> cq = (CriteriaQuery<E>) em.getCriteriaBuilder().createQuery();
+		EntityManager entityManager = getEntityManager();
+		CriteriaQuery<E> cq = (CriteriaQuery<E>) entityManager.getCriteriaBuilder().createQuery();
 		cq.select(cq.from(entityClass));
-		return em.createQuery(cq).getResultList();
+		return entityManager.createQuery(cq).getResultList();
 	}
 
 	/**
@@ -287,8 +273,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> findListEntity(String QL, Class<E> entityClass) {
-		return createQuery(getEntityManager(), QL, 0, 0, null, entityClass).getResultList();
+	public <E> List<E> findListEntity(String jpql, Class<E> entityClass) {
+		return createQuery(getEntityManager(), jpql, 0, 0, Collections.emptyMap(), entityClass).getResultList();
 	}
 
 	/**
@@ -296,8 +282,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> findListEntity(String QL, Map<String, Object> params, Class<E> entityClass) {
-		return createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getResultList();
+	public <E> List<E> findListEntity(String jpql, Map<String, Object> params, Class<E> entityClass) {
+		return createQuery(getEntityManager(), jpql, 0, 0, params, entityClass).getResultList();
 	}
 
 	/**
@@ -305,8 +291,9 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> findListEntity(String QL, int init, int maxResult, Class<E> entityClass) {
-		return createQuery(getEntityManager(), QL, init, maxResult, null, entityClass).getResultList();
+	public <E> List<E> findListEntity(String jqpl, int init, int maxResult, Class<E> entityClass) {
+		return createQuery(getEntityManager(), jqpl, init, maxResult, Collections.emptyMap(), entityClass)
+				.getResultList();
 	}
 
 	/**
@@ -314,9 +301,9 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public <E> List<E> findListEntity(String QL, int init, int maxResult, Map<String, Object> params,
+	public <E> List<E> findListEntity(String jpql, int init, int maxResult, Map<String, Object> params,
 			Class<E> entityClass) {
-		return createQuery(getEntityManager(), QL, init, maxResult, params, entityClass).getResultList();
+		return createQuery(getEntityManager(), jpql, init, maxResult, params, entityClass).getResultList();
 	}
 
 	/**
@@ -325,11 +312,11 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E> int countEntity(Class<E> entityClass) {
-		EntityManager em = getEntityManager();
-		CriteriaQuery<E> cq = (CriteriaQuery<E>) em.getCriteriaBuilder().createQuery();
+		EntityManager entityManager = getEntityManager();
+		CriteriaQuery<E> cq = (CriteriaQuery<E>) entityManager.getCriteriaBuilder().createQuery();
 		Root<E> rt = cq.from(entityClass);
-		cq.select((Selection<? extends E>) em.getCriteriaBuilder().count(rt));
-		Query q = em.createQuery(cq);
+		cq.select((Selection<? extends E>) entityManager.getCriteriaBuilder().count(rt));
+		Query q = entityManager.createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
 	}
 
@@ -337,11 +324,11 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 * @see FacadeHandlerLocal#countEntity(String, Class)
 	 */
 	@Override
-	public <E> int countEntity(String QL, Class<E> entityClass) {
+	public <E> int countEntity(String jqpl, Class<E> entityClass) {
 		int result = 0;
 		try {
-			result = ((Number) createQuery(getEntityManager(), QL, 0, 0, null, entityClass).getSingleResult())
-					.intValue();
+			result = ((Number) createQuery(getEntityManager(), jqpl, 0, 0, Collections.emptyMap(), entityClass)
+					.getSingleResult()).intValue();
 		} catch (NoResultException ex) {
 			return 0;
 		}
@@ -352,10 +339,10 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 * @see FacadeHandlerLocal#countEntity(String, Map, Class)
 	 */
 	@Override
-	public <E> int countEntity(String QL, Map<String, Object> params, Class<E> entityClass) {
+	public <E> int countEntity(String jqpl, Map<String, Object> params, Class<E> entityClass) {
 		int result = 0;
 		try {
-			result = ((Number) createQuery(getEntityManager(), QL, 0, 0, params, entityClass).getSingleResult())
+			result = ((Number) createQuery(getEntityManager(), jqpl, 0, 0, params, entityClass).getSingleResult())
 					.intValue();
 		} catch (NoResultException ex) {
 			return 0;
@@ -367,10 +354,10 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 * @see FacadeHandlerLocal#countEntity(String, int, int, Map, Class)
 	 */
 	@Override
-	public <E> int countEntity(String QL, int init, int maxResult, Map<String, Object> params, Class<E> entityClass) {
+	public <E> int countEntity(String jpql, int init, int maxResult, Map<String, Object> params, Class<E> entityClass) {
 		int result = 0;
 		try {
-			result = ((Number) createQuery(getEntityManager(), QL, init, maxResult, params, entityClass)
+			result = ((Number) createQuery(getEntityManager(), jpql, init, maxResult, params, entityClass)
 					.getSingleResult()).intValue();
 
 		} catch (NoResultException ex) {
@@ -384,8 +371,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> List<E> findListENQ(String namedQuery, Class<E> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -393,8 +379,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> List<E> findListENQ(String namedQuery, Map<String, Object> params, Class<E> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -402,8 +387,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> List<E> findListENQ(String namedQuery, int init, int maxResult, Class<E> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -412,8 +396,7 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	@Override
 	public <E> List<E> findListENQ(String namedQuery, int init, int maxResult, Map<String, Object> params,
 			Class<E> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	/**
@@ -421,8 +404,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> int countENQ(String namedQuery, Class<E> entityClass) {
-		return ((Number) createNamedQuery(getEntityManager(), namedQuery, 0, 0, null, null, entityClass)
-				.getSingleResult()).intValue();
+		return ((Number) createNamedQuery(getEntityManager(), namedQuery, 0, 0, Collections.emptyMap(),
+				Collections.emptyMap(), entityClass).getSingleResult()).intValue();
 	}
 
 	/**
@@ -430,8 +413,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	 */
 	@Override
 	public <E> int countENQ(String namedQuery, Map<String, Object> params, Class<E> entityClass) {
-		return ((Number) createNamedQuery(getEntityManager(), namedQuery, 0, 0, params, null, entityClass)
-				.getSingleResult()).intValue();
+		return ((Number) createNamedQuery(getEntityManager(), namedQuery, 0, 0, params, Collections.emptyMap(),
+				entityClass).getSingleResult()).intValue();
 	}
 
 	/**
@@ -440,8 +423,8 @@ public class FacadeHandler implements FacadeHandlerLocal {
 	@Override
 	public <E> int countENQ(String namedQuery, int init, int maxResult, Map<String, Object> params,
 			Class<E> entityClass) {
-		return ((Number) createNamedQuery(getEntityManager(), namedQuery, init, maxResult, params, null, entityClass)
-				.getSingleResult()).intValue();
+		return ((Number) createNamedQuery(getEntityManager(), namedQuery, init, maxResult, params,
+				Collections.emptyMap(), entityClass).getSingleResult()).intValue();
 	}
 
 }

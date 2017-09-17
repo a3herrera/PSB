@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:p="http://primefaces.org/ui" template="/base/mainTemplate.xhtml">
+
+	<ui:define name="pageTitle">
+		<title>#{language['label.menu.sanatoriums']}</title>
+	</ui:define>
+	<ui:define name="body">
+		<div class="row">
+			<span class="h4">#{language['label.menu.sanatoriums']}</span>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:include src="/base/subMenu.xhtml" />
+			</div>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:insert name="subBody" />
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

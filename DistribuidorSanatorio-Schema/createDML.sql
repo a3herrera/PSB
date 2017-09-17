@@ -10,16 +10,29 @@ UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='1' WHERE `MENU_KEY`='M
 INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('1', '/administration/administration.xhtml', '1', 'Admin', '1', 'label.menu.admin', '1', '1',sysdate());
 
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='2' WHERE `MENU_KEY`='MENU_ID';
-INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('2', '/administration/profiles.xhtml', '1', 'Profiles', '1', 'label.menu.profiles', '0', '1', '1',sysdate());
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('2', '/administration/profiles.xhtml', '1', 'Profiles', '1', 'label.menu.profiles', '1', '1', '1',sysdate());
 
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='3' WHERE `MENU_KEY`='MENU_ID';
-INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('3', '/administration/users.xhtml', '1', 'Usuarios', '1', 'label.menu.users', '0', '1', '1',sysdate());
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('3', '/administration/users.xhtml', '1', 'Users', '1', 'label.menu.users', '1', '1', '1',sysdate());
+
 
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='4' WHERE `MENU_KEY`='MENU_ID';
-INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('4', '/internals/internals.xhtml', '1', 'Internals', '1', 'label.menu.internal', '1', '1',sysdate());
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('4', '/sanatorium/sanatoriums.xhtml', '1', 'sanatorium', '1', 'label.menu.sanatoriums', '1', '1',sysdate());
+
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='5' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('5', '/sanatorium/centers.xhtml', '1', 'Centers', '1', 'label.menu.centers', '1', '1', '4',sysdate());
+
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='6' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('6', '/sanatorium/areas.xhtml', '1', 'Areas', '1', 'label.menu.areas', '1', '1', '4',sysdate());
+
+
+
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='7' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('7', '/internals/internals.xhtml', '1', 'Internals', '1', 'label.menu.internal', '1', '1',sysdate());
 
 
 INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '1');
-
+INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '4');
+INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '7');
 
 COMMIT;
