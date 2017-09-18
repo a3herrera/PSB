@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import javax.faces.bean.ManagedProperty;
 
 import app.client.utilities.StringUtility;
-import app.schema.enumerated.UserStates;
 
 public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 
@@ -15,10 +14,10 @@ public abstract class JPAEntityBean<E> extends JPAEntityBase<E> {
 	private static final long serialVersionUID = 4284260281478004795L;
 
 	@ManagedProperty(value = "#{message}")
-	private ResourceBundle messages;
+	protected ResourceBundle messages;
 
 	@ManagedProperty(value = "#{language}")
-	private ResourceBundle language;
+	protected ResourceBundle language;
 
 	public ResourceBundle getMessages() {
 		return messages;

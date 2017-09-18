@@ -35,8 +35,8 @@ public class Area extends Audit {
 
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
-	@Size(max = 25, min = 5, message = "{field.size.error}")
-	@Column(name = "AREA_NAME", length = 25, nullable = false)
+	@Size(max = 50, min = 5, message = "{field.size.error}")
+	@Column(name = "AREA_NAME", length = 50, nullable = false)
 	private String name;
 
 	@NotNull(message = "{field.not.null}")

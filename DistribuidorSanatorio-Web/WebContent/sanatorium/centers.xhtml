@@ -5,6 +5,72 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:s="http://jboss.com/products/seam/taglib"
-	xmlns:p="http://primefaces.org/ui" template="/sanatorium/sanatoriums.xhtml">
+	xmlns:p="http://primefaces.org/ui"
+	template="/sanatorium/sanatoriums.xhtml">
+	<ui:define name="subBody">
+		<h:form id="f1">
+			<div class="row justify-content-md-center" style="margin-top: 20px;">
+				<div class="col-lg-11">
+					<div class="row">
+						<div class="col">
+							<div class="card">
+								<div class="card-header bg-secondary text-white">
+									<div class="row">
+										<div class="col">
+											<span class="h6"> #{language['label.menu.centers']} </span>
+										</div>
+										<div class="col" style="text-align: right">
+											<a class="btn btn-outline-dark btn-sm"
+												jsf:action="#{CentersPageBean.newEntity()}">
+												#{language['app.option.new']} </a>
+										</div>
+									</div>
+								</div>
+								<div class="card-body">
+									<table class="table table-hover  table-sm">
+										<thead>
+											<tr>
+												<th width="50px">ID</th>
+												<th>#{language['label.name']}</th>
+												<th>#{language['label.state']}</th>
+												<th>#{language['label.total.areas']}</th>
+												<th width="100px">#{language['label.options']}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="item"
+												value="#{CentersPageBean.paginatedList}">
+												<tr>
+													<td>#{item.id}</td>
+													<td>#{item.name}</td>
+													<td>#{item.state? language['label.enabled']:
+														language['label.disabled']}</td>
+													<td>#{item.areas.size()}</td>
+													<td><ui:include src="/components/ced.xhtml">
+															<ui:param name="entityPageBean"
+																value="#{CentersPageBean}" />
+															<ui:param name="renderedNew" value="false" />
+															<ui:param name="renderedUpdate" value="true" />
+															<ui:param name="renderedDelete" value="true" />
+															<ui:param name="id" value="#{item.id}" />
+														</ui:include></td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+								<div class="card-footer">
+									<ui:include src="/components/scroller.xhtml">
+										<ui:param name="entityPageBean" value="#{CentersPageBean}" />
+										<ui:param name="render" value="f1" />
+									</ui:include>
+								</div>
+							</div>
+						</div>
+					</div>
 
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
 </ui:composition>

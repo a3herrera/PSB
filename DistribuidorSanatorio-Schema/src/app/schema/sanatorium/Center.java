@@ -1,5 +1,6 @@
 package app.schema.sanatorium;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Access;
@@ -48,8 +49,8 @@ public class Center extends Audit {
 	private long id;
 
 	@NotNull(message = "{field.not.null}")
-	@Size(max = 25, min = 5, message = "{field.size.error}")
-	@Column(name = "CENTER_NAME", nullable = false, length = 25)
+	@Size(max = 50, min = 5, message = "{field.size.error}")
+	@Column(name = "CENTER_NAME", nullable = false, length = 50)
 	private String name;
 
 	@NotNull(message = "{field.not.null}")
@@ -57,7 +58,7 @@ public class Center extends Audit {
 	private boolean state;
 
 	@OneToMany(mappedBy = "center", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<Area> areas;
+	private List<Area> areas = new ArrayList<Area>();
 
 	@Version
 	private long version;
