@@ -1,9 +1,10 @@
 package app.schema.sanatorium;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,11 +27,12 @@ public class Area extends Audit {
 	private static final long serialVersionUID = 2474513481314312876L;
 	public static final String TABLE_NAME = "CENTER_AREAS";
 	public static final String SEQUENCE_NAME = "SEQ_CENTER_AREAS_ID";
-	private static final String TO_STRING = "Entity Area Information: \n\t ID: {0}" + "\n\t Name: {1}"
-			+ "\n\t State: {2}" + "\n\t Version: {3}";
+	private static final String TO_STRING = "Entity Area Information: \n\t ID: {}" + "\n\t Name: {}" + "\n\t State: {}"
+			+ "\n\t Version: {}";
 
 	@Id
 	@Column(name = "AREA_ID")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long id;
 
 	@NotNull(message = "{field.not.null}")
@@ -44,7 +46,7 @@ public class Area extends Audit {
 	private boolean state;
 
 	@NotNull(message = "{field.not.null}")
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CENTER_ID", nullable = false, updatable = false, insertable = true)
 	private Center center;
 
