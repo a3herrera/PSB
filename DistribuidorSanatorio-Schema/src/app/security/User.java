@@ -5,7 +5,6 @@ package app.security;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -53,7 +52,6 @@ public class User extends Audit {
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
 	private long id;
 
-	
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
 	@Size(max = 50, min = 4, message = "{field.size.error}")
@@ -63,7 +61,7 @@ public class User extends Audit {
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
 	@Size(max = 150, min = 4, message = "{field.size.error}")
-	@Column(name = "PASSWORD", nullable = false, length = 150) 
+	@Column(name = "PASSWORD", nullable = false, length = 150)
 	private String passWord;
 
 	@NotNull(message = "{field.not.null}")
@@ -72,7 +70,7 @@ public class User extends Audit {
 	private UserStates state;
 
 	@NotNull(message = "{field.not.null}")
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
+	@ManyToOne()
 	@JoinColumn(name = "PROFILE_ID", updatable = true, insertable = true)
 	private Profile profile;
 

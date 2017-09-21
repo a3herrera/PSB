@@ -49,12 +49,19 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	@Override
 	protected String cancel() {
+		entity = null;
+		profiles = null;
+		profilesUI = null;
+		profileId = null;
+		clear();
 		return PAGE_MAIN;
 	}
 
 	@Override
 	protected String save() {
 		profileId = null;
+		profiles = null;
+		profilesUI = null;
 		return PAGE_MAIN;
 	}
 
@@ -124,6 +131,15 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	@Override
 	protected boolean beforeSave() {
+		if (profileId == null) {
+			warnMsg(getMessages().getString("info.message.user.profile.required"));
+		} else {
+			for (Profile profile : getAllProfiles()) {
+				if (profile.getID() == profileId) {
+					entity.setProfile(profile);
+				}
+			}
+		}
 
 		int usersCount = 0;
 		Map<String, Object> parameters = new HashMap<String, Object>();

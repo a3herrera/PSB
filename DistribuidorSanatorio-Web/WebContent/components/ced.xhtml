@@ -13,18 +13,24 @@
 			value="add"
 			styleClass="btn btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"
-			title="#{language['app.option.new']}" rendered="#{renderedNew}" />
+			title="#{language['app.option.new']}" rendered="#{renderedNew}">
+			<f:ajax render="#{render}" />
+		</h:commandLink>
 
-		<h:commandLink action="#{entityPageBean.editEntity(id)}"
-			id="update" value="edit"
+		<h:commandLink action="#{entityPageBean.editEntity(id)}" id="update"
+			value="edit"
 			styleClass="btn btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"
-			title="#{language['app.option.edit']}" rendered="#{renderedUpdate}" />
-			
+			title="#{language['app.option.edit']}" rendered="#{renderedUpdate}">
+			<f:ajax render="#{render}" />
+		</h:commandLink>
+
 		<h:commandLink action="#{entityPageBean.deleteEntity(id)}" id="delete"
 			value="remove"
 			styleClass="btn  btn-sm btn-outline-secondary material-icons"
 			data-toogle="tooltip" data-placement="left"
-			title="#{language['app.option.remove']}" rendered="#{renderedDelete}" />
+			title="#{language['app.option.remove']}" rendered="#{renderedDelete}">
+			<f:ajax render="#{render}" />
+		</h:commandLink>
 	</div>
 </ui:composition>
