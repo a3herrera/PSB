@@ -34,7 +34,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	private static final Logger logger = LogManager.getLogger(SecurityPageBean.class.getName());
 
-	private static final String PAGE_EDIT = "/administration/usersCU.xhtml?faces-redirect=false";
+	private static final String PAGE_EDIT = "/administration/usersCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/administration/users.xhtml?faces-redirect=true";
 
 	@Override

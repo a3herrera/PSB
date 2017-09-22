@@ -20,7 +20,7 @@ public class CentersPageBean extends JPAEntityBean<Center> {
 	private static final long serialVersionUID = 1607208878288698556L;
 	private static final Logger logger = LogManager.getLogger(CentersPageBean.class.getName());
 
-	private static final String PAGE_EDIT = "/sanatorium/centersCU.xhtml?faces-redirect=false";
+	private static final String PAGE_EDIT = "/sanatorium/centersCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/sanatorium/centers.xhtml?faces-redirect=true";
 
 	@Override

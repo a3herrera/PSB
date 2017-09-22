@@ -23,7 +23,7 @@ public class AreasPageBean extends JPAEntityBean<Area> {
 
 	private static final long serialVersionUID = 4028543085466770258L;
 	private static final Logger logger = LogManager.getLogger(AreasPageBean.class.getName());
-	private static final String PAGE_EDIT = "/sanatorium/areasCU.xhtml?faces-redirect=false";
+	private static final String PAGE_EDIT = "/sanatorium/areasCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/sanatorium/areas.xhtml?faces-redirect=true";
 
 	@Override

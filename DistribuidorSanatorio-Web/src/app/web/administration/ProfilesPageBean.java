@@ -24,7 +24,7 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 	 */
 	private static final long serialVersionUID = 9074300633297029690L;
 
-	private static final String PAGE_EDIT = "/administration/profilesCU.xhtml?faces-redirect=false";
+	private static final String PAGE_EDIT = "/administration/profilesCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/administration/profiles.xhtml?faces-redirect=true";
 
 	@Override
