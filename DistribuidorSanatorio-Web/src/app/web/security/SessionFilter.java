@@ -57,7 +57,7 @@ public class SessionFilter implements Filter {
 						}
 
 						if (!CollectionsUtiliy.isEmptyList(options)) {
-							
+
 							for (Menu option : options) {
 								String tempURL = removeFinally(option.getURL());
 								if ((uri.indexOf(tempURL) != -1)) {
@@ -92,24 +92,25 @@ public class SessionFilter implements Filter {
 	}
 
 	private boolean isAllowed(HttpServletRequest request) {
+		boolean result = true;
 		if (request.getSession().getAttribute(Constants.LOGGED) == null
-				|| (Boolean) request.getSession().getAttribute(Constants.LOGGED) == false) {
-			return false;
+				|| !((Boolean) request.getSession().getAttribute(Constants.LOGGED))) {
+			result = false;
 		}
-		return true;
+		return result;
 	}
 
 	public boolean defaultAllowed(String uri) {
-		return uri.indexOf(Constants.LOGIN_PAGE) > 0;
-		// AGREGAR AQUI PARA VER SI LA PERMITE 
+		return (uri.indexOf(Constants.LOGIN_PAGE) >= 0) || (uri.indexOf(Constants.RECOVER_PAGE) >= 0);
 	}
 
 	public boolean allwaysAllow(String uri) {
+		boolean result = false;
 		if (uri.endsWith(".css.view") || uri.endsWith(".js.view") || uri.endsWith(".eot.view")
 				|| uri.endsWith(".ttf.view") || uri.endsWith(".woff.view") || uri.endsWith(".woff2.view")) {
-			return true;
+			result = true;
 		}
-		return false;
+		return result;
 	}
 
 	@Override

@@ -126,7 +126,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 			log.debug("Mail send successfully");
 		} else 
 			log.error("Error send to Message ");
-		return null;
+		return Constants.RECOVER_PAGE.concat("?faces-redirect=true");
 	}
 
 	private List<Menu> mainOptions = Collections.emptyList();
