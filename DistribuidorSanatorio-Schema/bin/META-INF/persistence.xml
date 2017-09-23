@@ -5,13 +5,13 @@
 	<persistence-unit name="DistribuidorSanatorio-Schema"
 		transaction-type="RESOURCE_LOCAL">
 		<non-jta-data-source>jdbc/sanatorio</non-jta-data-source>
-		<class>app.schema.persons.Person</class>
-		<class>app.schema.persons.PersonInformation</class>
 		<class>app.security.Profile</class>
 		<class>app.security.User</class>
 		<class>app.security.Menu</class>
 		<class>app.schema.sanatorium.Center</class>
 		<class>app.schema.sanatorium.Area</class>
+		<class>app.schema.internals.Internal</class>
+		<class>app.schema.internals.InternalAdditionalInfo</class>
 		<shared-cache-mode>NONE</shared-cache-mode>
 		<properties>
 			<property name="eclipselink.query-results-cache" value="false" />

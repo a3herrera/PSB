@@ -8,14 +8,14 @@
 	xmlns:p="http://primefaces.org/ui" template="/base/mainTemplate.xhtml">
 
 	<ui:define name="pageTitle">
-		<title>#{language['app.profile.title']}</title>
+		<title>#{language['app.profile.settings']}</title>
 	</ui:define>
 	<ui:define name="pageAdditionals">
 		<h:outputScript library="js-custom" target="head" name="identicon.js"></h:outputScript>
 	</ui:define>
 	<ui:define name="body">
 		<div class="row">
-			<span class="h4">#{language['app.profile.title']}</span>
+			<span class="h4">#{language['app.profile.settings']}</span>
 		</div>
 		<div class="row">
 			<div class="col-md-10">
@@ -25,22 +25,30 @@
 					<div class="card-header">
 						<nav class="nav nav-tabs card-header-tabs" role="tablist"
 							id="profileTabs">
-							<a class="nav-item nav-link active" id="nav-home-tab"
-								data-toggle="tab" href="#nav-home" role="tab"
-								aria-controls="nav-home" aria-expanded="true">#{language['app.profile.info']}
-							</a> <a class="nav-item nav-link" id="nav-profile-tab"
-								data-toggle="tab" href="#nav-profile" role="tab"
-								aria-controls="nav-profile">
+							<div
+								jsf:rendered="#{SecurityPageBean.entity.internal==null? false: true}">
+								<a class="nav-item nav-link active" id="nav-home-tab"
+									data-toggle="tab" href="#nav-home" role="tab"
+									aria-controls="nav-home"
+									aria-expanded="#{SecurityPageBean.entity.internal==null? false: true}">#{language['app.profile.info']}
+								</a>
+							</div>
+							<a
+								class="nav-item nav-link #{SecurityPageBean.entity.internal==null? 'active': ''}"
+								id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+								role="tab" aria-controls="nav-profile"
+								aria-expanded="#{SecurityPageBean.entity.internal==null? true: false}">
 								#{language['app.profile.changePassword']}</a>
 						</nav>
 					</div>
 					<div class="card-body">
 						<div class="tab-content" id="nav-tabContent">
 							<div class="tab-pane fade show active" id="nav-home"
-								role="tabpanel" aria-labelledby="nav-home-tab">
+								role="tabpanel" aria-labelledby="nav-home-tab"
+								jsf:rendered="#{SecurityPageBean.entity.internal==null? false: true}">
 								<ui:include src="/profile/profileInformation.xhtml" />
 							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel"
+							<div class="tab-pane fade #{SecurityPageBean.entity.internal==null? 'show active': ''}" id="nav-profile" role="tabpanel"
 								aria-labelledby="nav-profile-tab">
 								<ui:include src="/profile/changePassword.xhtml" />
 							</div>

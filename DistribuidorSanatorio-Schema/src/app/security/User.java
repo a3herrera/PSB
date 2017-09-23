@@ -5,6 +5,7 @@ package app.security;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,7 +28,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import app.schema.embedable.Audit;
 import app.schema.enumerated.UserStates;
-import app.schema.persons.Person;
+import app.schema.internals.Internal;
 
 /**
  * @author Angel Alfaro
@@ -74,9 +75,9 @@ public class User extends Audit {
 	@JoinColumn(name = "PROFILE_ID", updatable = true, insertable = true)
 	private Profile profile;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PERSON_ID", nullable = true)
-	private Person person;
+	@OneToOne(fetch = FetchType.LAZY, orphanRemoval = false, cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.REFRESH }, mappedBy = "user")
+	private Internal internal;
 
 	@Version
 	private long version;
@@ -129,12 +130,12 @@ public class User extends Audit {
 		this.profile = profile;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Internal getInternal() {
+		return internal;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setInternal(Internal internal) {
+		this.internal = internal;
 	}
 
 }

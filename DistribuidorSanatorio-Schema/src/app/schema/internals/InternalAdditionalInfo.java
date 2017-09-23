@@ -1,4 +1,4 @@
-package app.schema.persons;
+package app.schema.internals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,26 +24,26 @@ import app.schema.embedable.Audit;
 import app.schema.enumerated.InformationType;
 
 @Entity
-@Table(name = PersonInformation.TABLE_NAME)
-@TableGenerator(name = PersonInformation.SEQUENCE_NAME, table = PersonInformation.SEQUENCE_NAME, pkColumnName = "PERSON_INF_KEY", valueColumnName = "PERSON_INF_VALUE", pkColumnValue = "PERSON_INF_ID", allocationSize = 1)
-public class PersonInformation extends Audit {
+@Table(name = InternalAdditionalInfo.TABLE_NAME)
+@TableGenerator(name = InternalAdditionalInfo.SEQUENCE_NAME, table = InternalAdditionalInfo.SEQUENCE_NAME, pkColumnName = "INT_ADD_INF_KEY", valueColumnName = "INT_ADD_INF_VALUE", pkColumnValue = "INT_ADD_INF_ID", allocationSize = 1)
+public class InternalAdditionalInfo extends Audit {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2350115216076062679L;
 
-	public static final String TABLE_NAME = "PERSON_INFORMATION";
-	public static final String SEQUENCE_NAME = "SEQ_PERSON_INFORMATION_ID";
+	public static final String TABLE_NAME = "INTERNAL_INFORMATION";
+	public static final String SEQUENCE_NAME = "SEQ_INTERNAL_ADDITIONAL_INFO_ID";
 
 	@Id
 	@Column(name = "INFORMATION_ID")
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = SEQUENCE_NAME)
-	private long ID;    
+	private long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name= "PERSON_ID", nullable = false)
-	private Person person;
+	@JoinColumn(name = "PERSON_ID", nullable = false)
+	private Internal internal;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TYPE", length = 30, nullable = false)
@@ -52,26 +52,26 @@ public class PersonInformation extends Audit {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@MapKeyColumn(name = "KEY_", nullable = false)
 	@Column(name = "VALUE_", nullable = false)
-	@CollectionTable(name = "PERSON_ADD_INFO", joinColumns = @JoinColumn(name = "INFORMATION_ID"))
+	@CollectionTable(name = "INTERNAL_ADD_INFO", joinColumns = @JoinColumn(name = "INFORMATION_ID"))
 	private Map<String, String> additionalInfo = new HashMap<String, String>();
 
 	@Version
 	private long version;
 
-	public long getID() {
-		return ID;
+	public long getId() {
+		return id;
 	}
 
-	public void setID(long iD) {
-		ID = iD;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Internal getInternal() {
+		return internal;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setInternal(Internal internal) {
+		this.internal = internal;
 	}
 
 	public InformationType getType() {
