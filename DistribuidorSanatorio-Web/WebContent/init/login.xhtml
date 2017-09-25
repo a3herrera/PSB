@@ -40,9 +40,9 @@
 
 									<div>
 										<button class="btn btn-outline-dark btn-sm"
-											jsf:process="@this" jsf:action="#{SecurityPageBean.login()}">
+											jsf:process="@this" jsf:action="#{SecurityPageBean.login()}" >
 											#{language['login']}</button>
-										<a class="badge" jsf:action="#{SecurityPageBean.receiverPass()}">#{language['password.reset']}</a>
+										<p:commandLink class="badge" action="#{SecurityPageBean.receiverPass()}" immediate="true">#{language['password.reset']}</p:commandLink>
 									</div>
 									<h:messages globalOnly="true" styleClass="alert"
 										style="list-style-type: none;font-size:12px;margin-left:-20px;" />

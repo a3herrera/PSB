@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/administration/administration.xhtml">
 	<ui:define name="subBody">
-		<h:form>
+		<h:form id="f1">
 
 			<div class="row justify-content-md-center" style="margin-top: 20px;">
 				<div class="col-lg-11">
@@ -49,18 +49,18 @@
 										</div>
 
 										<div class="form-group row">
-											<label for="name" class="col-sm-3 col-form-label">
-												#{language['password']} </label>
+											<label for="mail" class="col-sm-3 col-form-label">
+												#{language['label.email']} </label>
 											<div class="col-sm-9">
-												<input type="password" jsf:id="password"
-													jsf:value="#{UsersPageBean.entity.passWord}"
-													class="form-control" jsf:redisplay="true" />
+												<input type="text" jsf:id="userEmail"
+													jsf:value="#{UsersPageBean.entity.email}"
+													class="form-control" />
 											</div>
 										</div>
 										<div class="form-group row">
 											<div class="col-sm-3" />
 											<div class="col-sm-9">
-												<h:message for="password" role="alert" styleClass="alert"
+												<h:message for="userEmail" role="alert" styleClass="alert"
 													infoClass="alert alert-info"
 													warnClass="alert alert-warning"
 													errorClass="alert alert-danger"
@@ -105,6 +105,41 @@
 													fatalClass="alert alert-danger" />
 											</div>
 										</div>
+										<h:form id="fr01" rendered="#{UsersPageBean.new? true: false}">
+											<h:form id="fr02"
+												rendered="#{!UsersPageBean.generatePassword}">
+												<div class="form-group row">
+													<label for="name" class="col-sm-3 col-form-label">
+														#{language['password']} </label>
+													<div class="col-sm-9">
+														<input type="password" jsf:id="password"
+															jsf:value="#{UsersPageBean.entity.passWord}"
+															class="form-control" jsf:redisplay="true" />
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-sm-3" />
+													<div class="col-sm-9">
+														<h:message for="password" role="alert" styleClass="alert"
+															infoClass="alert alert-info"
+															warnClass="alert alert-warning"
+															errorClass="alert alert-danger"
+															fatalClass="alert alert-danger" />
+													</div>
+												</div>
+											</h:form>
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label" for="generate">#{language['label.generatePassword']}</label>
+												<div class="col-sm-9">
+													<p:selectBooleanCheckbox
+														value="#{UsersPageBean.generatePassword}">
+														<p:ajax update="f1" />
+													</p:selectBooleanCheckbox>
+												</div>
+											</div>
+
+										</h:form>
+
 									</div>
 								</div>
 								<div class="card-footer">

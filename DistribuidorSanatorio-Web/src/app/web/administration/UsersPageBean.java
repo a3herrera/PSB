@@ -36,6 +36,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	private static final String PAGE_EDIT = "/administration/usersCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/administration/users.xhtml?faces-redirect=true";
+	private boolean generatePassword;
 
 	@Override
 	protected String add() {
@@ -204,6 +205,14 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	public void setProfileId(Long profileId) {
 		this.profileId = profileId;
+	}
+
+	public boolean isGeneratePassword() {
+		return generatePassword;
+	}
+
+	public void setGeneratePassword(boolean generatePassword) {
+		this.generatePassword = generatePassword;
 	}
 
 }

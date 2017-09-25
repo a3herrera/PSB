@@ -58,6 +58,12 @@ public class User extends Audit {
 	@Size(max = 50, min = 4, message = "{field.size.error}")
 	@Column(name = "USER_NAME", nullable = false, length = 50)
 	private String userName;
+	
+	@NotNull(message = "{field.not.null}")
+	@NotBlank(message = "{field.not.null}")
+	@Size(max = 50, min = 4, message = "{field.size.error}")
+	@Column(name = "EMAIL", nullable = false, length = 50)
+	private String email;
 
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
@@ -96,6 +102,14 @@ public class User extends Audit {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassWord() {
