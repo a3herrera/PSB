@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,7 @@ import app.security.Profile;
 import app.security.User;
 import app.web.administration.Controlador;
 import app.web.administration.Correo;
+import app.web.administration.UsersPageBean;
 import app.web.base.SecurityBeanBase;
 
 @SessionScoped
@@ -31,11 +33,17 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	 * 
 	 */
 	private static final long serialVersionUID = -6193822077008977126L;
-	private static final Logger log = LogManager.getLogger(SecurityPageBean.class.getName());
+	private static final Logger logger = LogManager.getLogger(SecurityPageBean.class.getName());
 	private String userName;
+	private String previousPassword;
+
+	@NotNull(message = "El campo es requerido ABAC")
+	private String confirmPassword;
+	private String newPassword;
 	private String subject = "Mensaje de Prueba";
 	private String message = "Este es el cuerpo del mensaje, aqui debe ir la contraseñia de recuperación";
 	private String mail = "rodas-alex@hotmail.com";
+	private String passWordT;
 
 	public SecurityPageBean() {
 		entity = new User();
@@ -90,13 +98,13 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	@Override
 	public String login() throws Exception {
 		String result = super.login();
-		log.debug("login");
+		logger.debug("login");
 		if (!StringUtility.isEmpty(result) && !CollectionsUtiliy.isEmptyList(mainOptions)) {
-			log.debug("success login ");
+			logger.debug("success login ");
 			List<Menu> allOptions = allOption(mainOptions);
 			getSessionScope().put(Constants.USER_OPTIONS, allOptions);
 		} else
-			log.error("Error login - Please try again ");
+			logger.error("Error login - Please try again ");
 		return result;
 	}
 
@@ -112,7 +120,34 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		}
 		return allOptions;
 	}
-	
+
+	public void changePassword() {
+		logger.debug("changePassword() Begin");
+		String validatePasswordEcr = StringUtility.encryptMessage(previousPassword, EncryptionTypes.MD5);
+		try {
+			if (validatePasswordEcr.equals(resultEntity.getPassWord())) {
+				if (newPassword.equals(confirmPassword)) {
+					String newPasswordEcr = StringUtility.encryptMessage(newPassword, EncryptionTypes.MD5);
+					resultEntity.setPassWord(newPasswordEcr);
+					saveChangePassword(resultEntity);
+					logger.debug("Password successfully changed");
+					warnMsg(getMessages().getString("message.changePassword.newPassSuccess"));
+				} else {
+					logger.debug("Error Changed Password, New Password does not match");
+					warnMsg(getMessages().getString("message.changePassword.newPass"));
+				}
+
+			} else {
+				logger.debug("Error Changed Password, Previous Password does not match");
+				warnMsg(getMessages().getString("message.changePassword.previusPass"));
+
+			}
+
+		} catch (Exception e) {
+			logger.error("Error : " + e);
+		}
+	}
+
 	@Override
 	public String receiverPass() throws Exception {
 		Correo c = new Correo();
@@ -123,9 +158,9 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		c.setDestino(getMail());
 		Controlador co = new Controlador();
 		if (co.enviarCorreo(c)) {
-			log.debug("Mail send successfully");
-		} else 
-			log.error("Error send to Message ");
+			logger.debug("Mail send successfully");
+		} else
+			logger.error("Error send to Message ");
 		return Constants.RECOVER_PAGE.concat("?faces-redirect=true");
 	}
 
@@ -279,7 +314,7 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
 	public String getSubject() {
 		return subject;
 	}
@@ -304,5 +339,36 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		this.mail = mail;
 	}
 
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getPreviousPassword() {
+		return previousPassword;
+	}
+
+	public void setPreviousPassword(String previousPassword) {
+		this.previousPassword = previousPassword;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	public String getPassWordT() {
+		return passWordT;
+	}
+
+	public void setPassWordT(String passWordT) {
+		this.passWordT = passWordT;
+	}
 
 }

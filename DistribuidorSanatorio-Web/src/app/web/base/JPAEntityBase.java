@@ -8,8 +8,12 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import app.client.utilities.StringUtility;
 import app.interfaces.base.FacadeHandlerLocal;
+import app.web.security.SecurityPageBean;
 
 public abstract class JPAEntityBase<E> extends BeanBase {
 
@@ -34,6 +38,7 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	protected String countQL;
 	protected String whereQL;
 	protected Map<String, Object> params = new HashMap<String, Object>();
+	private static final Logger logger = LogManager.getLogger(JPAEntityBase.class.getName());
 
 	protected abstract String getCreateMsg();
 
@@ -190,6 +195,15 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 	protected void afterSave() {
 		listEntity = null;
 		countEntity = null;
+	}
+
+	public void saveChangePassword(E entity) {
+		try {
+			this.entity = facadeHandler.updateEntity(entity);
+		} catch (Exception e) {
+			logger.error("Error to Change Password : " + e);
+		}
+
 	}
 
 	public String saveEntity() {

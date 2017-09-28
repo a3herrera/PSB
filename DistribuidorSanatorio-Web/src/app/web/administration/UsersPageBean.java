@@ -176,7 +176,7 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 		return super.beforeSave();
 	}
-
+	
 	private boolean passwordElegibility() {
 		String encryptToken = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
 		if (StringUtility.isEmpty(encryptToken)) {
