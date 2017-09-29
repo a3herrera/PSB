@@ -37,7 +37,6 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	private String userName;
 	private String previousPassword;
 
-	@NotNull(message = "El campo es requerido ABAC")
 	private String confirmPassword;
 	private String newPassword;
 	private String subject = "Mensaje de Prueba";
