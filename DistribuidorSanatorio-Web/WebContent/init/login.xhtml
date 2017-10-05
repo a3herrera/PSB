@@ -44,7 +44,7 @@
 											#{language['login']}
 										</button>
 										<p:commandLink class="badge"
-											action="#{SecurityPageBean.receiverPass()}" immediate="true">#{language['password.reset']}</p:commandLink>
+											action="/init/recoveryPassword.view?faces-redirect=true" immediate="true">#{language['password.reset']}</p:commandLink>
 									</div>
 									<h:messages globalOnly="true" styleClass="alert"
 										style="list-style-type: none;font-size:12px;margin-left:-20px;" />

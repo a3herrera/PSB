@@ -206,6 +206,16 @@ public abstract class JPAEntityBase<E> extends BeanBase {
 
 	}
 
+	public <E> List<E> searchUser(Class<E> entity) {
+			List<E> listUser = null;
+		try {
+			listUser = facadeHandler.findListEntity(entity);
+		} catch (Exception e) {
+			logger.error("Error to Change Password : " + e);
+		}
+		return listUser;
+	}
+
 	public String saveEntity() {
 		if (beforeSave()) {
 			try {

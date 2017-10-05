@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -87,6 +88,9 @@ public class User extends Audit {
 
 	@Version
 	private long version;
+	
+	@Transient
+	private boolean generatePassword;
 
 	public long getId() {
 		return id;
@@ -150,6 +154,14 @@ public class User extends Audit {
 
 	public void setInternal(Internal internal) {
 		this.internal = internal;
+	}
+
+	public boolean isGeneratePassword() {
+		return generatePassword;
+	}
+
+	public void setGeneratePassword(boolean generatePassword) {
+		this.generatePassword = generatePassword;
 	}
 
 }

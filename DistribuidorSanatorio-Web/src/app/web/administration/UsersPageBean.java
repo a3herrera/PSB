@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import app.client.enums.EncryptionTypes;
+import app.client.utilities.Constants;
 import app.client.utilities.StringUtility;
 import app.schema.enumerated.UserStates;
 import app.security.Profile;
@@ -36,7 +37,6 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	private static final String PAGE_EDIT = "/administration/usersCU.xhtml?faces-redirect=true";
 	private static final String PAGE_MAIN = "/administration/users.xhtml?faces-redirect=true";
-	private boolean generatePassword;
 
 	@Override
 	protected String add() {
@@ -129,9 +129,13 @@ public class UsersPageBean extends JPAEntityBean<User> {
 	private static final String QL_CHECK_SECURITY_TOKEN = "Select count(e) from User e where e.id = :id and e.passWord = :password";
 	private static final String QL_CHECK_EXIST_USER = "Select count(e) from User e where upper(e.userName) = :userName";
 	private static final String QL_CHECK_EXIST_USER_EDIT = "Select count(e) from User e where upper(e.userName) = :userName and e.id <> :id";
-
 	@Override
 	protected boolean beforeSave() {
+		logger.debug("Asignacion de contraseña: ");
+		if (entity.isGeneratePassword()) {
+			entity.setPassWord("ADMIN");
+		}
+
 		if (profileId == null) {
 			warnMsg(getMessages().getString("info.message.user.profile.required"));
 		} else {
@@ -174,9 +178,21 @@ public class UsersPageBean extends JPAEntityBean<User> {
 		if (!state)
 			return false;
 
+		Correo c = new Correo();
+		c.setContrasenia(Constants.CNST_PASSWORD);
+		c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
+		c.setAsunto(Constants.CNST_GENERATE_PASWWORD);
+		c.setMensaje("Mensaje \n prueba \n\n " + entity.getPassWord());
+		c.setDestino(entity.getEmail());
+		Controlador co = new Controlador();
+		if (co.enviarCorreo(c)) {
+			logger.debug("Mail send successfully");
+		} else
+			logger.error("Error send to Message ");
+
 		return super.beforeSave();
 	}
-	
+
 	private boolean passwordElegibility() {
 		String encryptToken = StringUtility.encryptMessage(entity.getPassWord(), EncryptionTypes.MD5);
 		if (StringUtility.isEmpty(encryptToken)) {
@@ -205,14 +221,6 @@ public class UsersPageBean extends JPAEntityBean<User> {
 
 	public void setProfileId(Long profileId) {
 		this.profileId = profileId;
-	}
-
-	public boolean isGeneratePassword() {
-		return generatePassword;
-	}
-
-	public void setGeneratePassword(boolean generatePassword) {
-		this.generatePassword = generatePassword;
 	}
 
 }

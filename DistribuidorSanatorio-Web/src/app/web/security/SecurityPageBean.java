@@ -2,7 +2,9 @@ package app.web.security;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -25,6 +27,8 @@ import app.web.administration.Correo;
 import app.web.administration.UsersPageBean;
 import app.web.base.SecurityBeanBase;
 
+import java.security.SecureRandom;
+
 @SessionScoped
 @ManagedBean(name = "SecurityPageBean")
 public class SecurityPageBean extends SecurityBeanBase<User> {
@@ -35,13 +39,12 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 	private static final long serialVersionUID = -6193822077008977126L;
 	private static final Logger logger = LogManager.getLogger(SecurityPageBean.class.getName());
 	private String userName;
+	private String receiverUserName;
 	private String previousPassword;
 
 	private String confirmPassword;
 	private String newPassword;
 	private String subject = "Mensaje de Prueba";
-	private String message = "Este es el cuerpo del mensaje, aqui debe ir la contraseñia de recuperación";
-	private String mail = "rodas-alex@hotmail.com";
 	private String passWordT;
 
 	public SecurityPageBean() {
@@ -149,18 +152,65 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	@Override
 	public String receiverPass() throws Exception {
-		Correo c = new Correo();
-		c.setContrasenia(Constants.CNST_PASSWORD);
-		c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
-		c.setAsunto(getSubject());
-		c.setMensaje(getMessage());
-		c.setDestino(getMail());
-		Controlador co = new Controlador();
-		if (co.enviarCorreo(c)) {
-			logger.debug("Mail send successfully");
-		} else
-			logger.error("Error send to Message ");
+
 		return Constants.RECOVER_PAGE.concat("?faces-redirect=true");
+	}
+
+	private static final String MESSAGE_RECEIVER = "Cuerpo del mensaje ";
+
+	public String receiver() {
+
+		List<User> listUser = null;
+		User user = new User();
+		try {
+			listUser = searchUser(User.class);
+			Iterator iter = listUser.iterator();
+			while (iter.hasNext()) {
+				user = (User) iter.next();
+				if (user.getUserName().equalsIgnoreCase(receiverUserName)) {
+					ArrayList<Object> crunchifyValueObj = StringUtility.generateASCII();
+
+					StringBuilder crunchifyBuffer = new StringBuilder();
+					Random rnd = new Random();
+
+					for (int length = 0; length < (int) (rnd.nextDouble() * 15 + 7); length++) {
+						crunchifyBuffer.append(StringUtility.crunchifyGetRandom(crunchifyValueObj));
+					}
+
+					logger.debug("Pass: " + crunchifyBuffer.toString());
+					String newPasswordEcr = StringUtility.encryptMessage(crunchifyBuffer.toString(), EncryptionTypes.MD5);
+					user.setPassWord(newPasswordEcr);
+					saveChangePassword(user);
+					Correo c = new Correo();
+					c.setContrasenia(Constants.CNST_PASSWORD);
+					c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
+					c.setAsunto(getSubject());
+					c.setMensaje(MESSAGE_RECEIVER + crunchifyBuffer.toString());
+					crunchifyBuffer.setLength(0);
+					c.setDestino(user.getEmail());
+					Controlador co = new Controlador();
+					if (co.enviarCorreo(c)) {
+						logger.debug("Mail send successfully");
+					} else
+						logger.error("Error send to Message ");
+
+					break;
+				} else {
+					user = new User();
+				}
+
+				logger.debug("id: " + user.getId());
+				logger.debug("User: " + user.getUserName());
+				user = null;
+			}
+		} catch (Exception e) {
+			logger.error("Receiver() - Error : " + e);
+		}
+		return Constants.RECOVER_PAGE.concat("?faces-redirect=true");
+	}
+
+	public String cancelReceiver() {
+		return Constants.LOGIN_PAGE.concat("?faces-redirect=true");
 	}
 
 	private List<Menu> mainOptions = Collections.emptyList();
@@ -322,22 +372,6 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 		this.subject = subject;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
 	public String getNewPassword() {
 		return newPassword;
 	}
@@ -368,6 +402,14 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	public void setPassWordT(String passWordT) {
 		this.passWordT = passWordT;
+	}
+
+	public String getReceiverUserName() {
+		return receiverUserName;
+	}
+
+	public void setReceiverUserName(String receiverUserName) {
+		this.receiverUserName = receiverUserName;
 	}
 
 }

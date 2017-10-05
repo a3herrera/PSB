@@ -23,5 +23,6 @@ public class Constants {
 	
 	public static final String CNST_PASSWORD = "vdpuatcgnpjtbzin";
 	public static final String CNST_USER_MAIL = "Passrecover2017@gmail.com";
+	public static final String CNST_GENERATE_PASWWORD = "Confirmación de registro en el sistema";
 	
 }

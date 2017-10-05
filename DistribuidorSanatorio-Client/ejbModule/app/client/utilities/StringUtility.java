@@ -10,6 +10,10 @@ import org.apache.logging.log4j.Logger;
 
 import app.client.enums.EncryptionTypes;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * <p>
  * Useful String utilities for common task
@@ -214,8 +218,8 @@ public class StringUtility {
 
 	/**
 	 * <p>
-	 * Convert a byte array into a printable format containing a {@link String} of
-	 * hex digit characters (two per byte).
+	 * Convert a byte array into a printable format containing a {@link String}
+	 * of hex digit characters (two per byte).
 	 * </p>
 	 */
 	public static String encode(final byte[] bytes) {
@@ -256,8 +260,8 @@ public class StringUtility {
 	 * @param message
 	 *            texto a encriptar
 	 * @param algorithm
-	 *            algoritmo de encriptacion, puede ser: MD2, MD5, SHA-1, SHA-256,
-	 *            SHA-384, SHA-512
+	 *            algoritmo de encriptacion, puede ser: MD2, MD5, SHA-1,
+	 *            SHA-256, SHA-384, SHA-512
 	 * @return mensaje encriptado
 	 */
 	public static String encryptMessage(final String message, EncryptionTypes type) {
@@ -274,6 +278,42 @@ public class StringUtility {
 			logger.error("Fail to decode Message ".concat(e.getMessage()));
 		}
 		return "";
+	}
+	
+	public static ArrayList<Object> generateASCII(){
+
+		ArrayList<Object> crunchifyValueObj;
+
+		crunchifyValueObj = new ArrayList<>();
+
+		for (int i = 48; i < 58; i++) {
+			crunchifyValueObj.add((char) i);
+		}
+
+		for (int i = 65; i < 91; i++) {
+			crunchifyValueObj.add((char) i);
+		}
+
+		for (int i = 97; i < 123; i++) {
+			crunchifyValueObj.add((char) i);
+		
+		}
+		crunchifyValueObj.add((char) 64);
+		crunchifyValueObj.add((char) 33);
+		crunchifyValueObj.add((char) 45);
+		crunchifyValueObj.add((char) 95);
+
+		return crunchifyValueObj;
+	}
+
+	public static char crunchifyGetRandom(ArrayList<Object> crunchifyValueObj) {
+		
+		SecureRandom crunchifyRandomNo = new SecureRandom();
+		
+		char crunchifyChar = (char) crunchifyValueObj
+				.get(crunchifyRandomNo.nextInt(crunchifyValueObj.size()));
+
+		return crunchifyChar;
 	}
 
 	/***

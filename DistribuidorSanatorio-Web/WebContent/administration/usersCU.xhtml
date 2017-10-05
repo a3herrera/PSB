@@ -107,7 +107,7 @@
 										</div>
 										<h:form id="fr01" rendered="#{UsersPageBean.new? true: false}">
 											<h:form id="fr02"
-												rendered="#{!UsersPageBean.generatePassword}">
+												rendered="#{!UsersPageBean.entity.generatePassword}">
 												<div class="form-group row">
 													<label for="name" class="col-sm-3 col-form-label">
 														#{language['password']} </label>
@@ -132,7 +132,7 @@
 												<label class="col-sm-3 col-form-label" for="generate">#{language['label.generatePassword']}</label>
 												<div class="col-sm-9">
 													<p:selectBooleanCheckbox
-														value="#{UsersPageBean.generatePassword}">
+														value="#{UsersPageBean.entity.generatePassword}">
 														<p:ajax update="f1" />
 													</p:selectBooleanCheckbox>
 												</div>
