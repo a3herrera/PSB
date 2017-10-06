@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -129,11 +130,24 @@ public class UsersPageBean extends JPAEntityBean<User> {
 	private static final String QL_CHECK_SECURITY_TOKEN = "Select count(e) from User e where e.id = :id and e.passWord = :password";
 	private static final String QL_CHECK_EXIST_USER = "Select count(e) from User e where upper(e.userName) = :userName";
 	private static final String QL_CHECK_EXIST_USER_EDIT = "Select count(e) from User e where upper(e.userName) = :userName and e.id <> :id";
+	private static final String SUBJECT = "Mensaje de Prueba";
+
 	@Override
 	protected boolean beforeSave() {
-		logger.debug("Asignacion de contraseña: ");
+		StringBuilder crunchifyBuffer = new StringBuilder();
+
 		if (entity.isGeneratePassword()) {
-			entity.setPassWord("ADMIN");
+
+			ArrayList<Object> crunchifyValueObj = StringUtility.generateASCII();
+
+			Random rnd = new Random();
+
+			for (int length = 0; length < (int) (rnd.nextDouble() * 15 + 7); length++) {
+				crunchifyBuffer.append(StringUtility.crunchifyGetRandom(crunchifyValueObj));
+			}
+			logger.debug("Pass: " + crunchifyBuffer.toString());
+
+			entity.setPassWord(crunchifyBuffer.toString());
 		}
 
 		if (profileId == null) {
@@ -178,17 +192,21 @@ public class UsersPageBean extends JPAEntityBean<User> {
 		if (!state)
 			return false;
 
-		Correo c = new Correo();
-		c.setContrasenia(Constants.CNST_PASSWORD);
-		c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
-		c.setAsunto(Constants.CNST_GENERATE_PASWWORD);
-		c.setMensaje("Mensaje \n prueba \n\n " + entity.getPassWord());
-		c.setDestino(entity.getEmail());
-		Controlador co = new Controlador();
-		if (co.enviarCorreo(c)) {
-			logger.debug("Mail send successfully");
-		} else
-			logger.error("Error send to Message ");
+		if (entity.isGeneratePassword()) {
+			Correo c = new Correo();
+			c.setContrasenia(Constants.CNST_PASSWORD);
+			c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
+			c.setAsunto(SUBJECT);
+			c.setMensaje(Constants.MESSAGE_RECEIVER + crunchifyBuffer.toString());
+			crunchifyBuffer.setLength(0);
+			c.setDestino(entity.getEmail());
+			Controlador co = new Controlador();
+			if (co.enviarCorreo(c)) {
+				logger.debug("Mail send successfully");
+			} else
+				logger.error("Error send to Message ");
+
+		}
 
 		return super.beforeSave();
 	}

@@ -44,7 +44,6 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	private String confirmPassword;
 	private String newPassword;
-	private String subject = "Mensaje de Prueba";
 	private String passWordT;
 
 	public SecurityPageBean() {
@@ -155,8 +154,9 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 		return Constants.RECOVER_PAGE.concat("?faces-redirect=true");
 	}
+	
+	private static final String SUBJECT = "Mensaje de Prueba";
 
-	private static final String MESSAGE_RECEIVER = "Cuerpo del mensaje ";
 
 	public String receiver() {
 
@@ -184,8 +184,8 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 					Correo c = new Correo();
 					c.setContrasenia(Constants.CNST_PASSWORD);
 					c.setUsuarioCorreo(Constants.CNST_USER_MAIL);
-					c.setAsunto(getSubject());
-					c.setMensaje(MESSAGE_RECEIVER + crunchifyBuffer.toString());
+					c.setAsunto(SUBJECT);
+					c.setMensaje(Constants.MESSAGE_RECEIVER + crunchifyBuffer.toString());
 					crunchifyBuffer.setLength(0);
 					c.setDestino(user.getEmail());
 					Controlador co = new Controlador();
@@ -362,14 +362,6 @@ public class SecurityPageBean extends SecurityBeanBase<User> {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 
 	public String getNewPassword() {
