@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -56,19 +57,22 @@ public class User extends Audit {
 
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
-	@Size(max = 50, min = 4, message = "{field.size.error}")
+	@Size(max = 21, min = 4, message = "{field.size.error}")
+	@Pattern(regexp = "[A-Za-z0-9!_-]{3,10}\\.[A-Za-z0-9!_-]{3,10}$", message = "{field.not.validPattern}")
 	@Column(name = "USER_NAME", nullable = false, length = 50)
 	private String userName;
 	
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
 	@Size(max = 50, min = 4, message = "{field.size.error}")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "{field.not.validEmail}")
 	@Column(name = "EMAIL", nullable = false, length = 50)
 	private String email;
 
 	@NotNull(message = "{field.not.null}")
 	@NotBlank(message = "{field.not.null}")
-	@Size(max = 150, min = 4, message = "{field.size.error}")
+	@Size(max = 40, min = 7, message = "{field.size.error}")
+	@Pattern(regexp = "[A-Za-z0-9!_-]{7,}$", message = "{field.not.validPass}")
 	@Column(name = "PASSWORD", nullable = false, length = 150)
 	private String passWord;
 

@@ -4,6 +4,8 @@ INSERT INTO `sanatorio`.`profiles` (`PROFILE_ID`, `NAME`, `STATE`, `VERSION`,`CR
  
 UPDATE `sanatorio`.`seq_user_id` SET `USER_VALUE`='1' WHERE `USER_KEY`='USER_ID';
 INSERT INTO `sanatorio`.`users` (`USER_ID`, `PASSWORD`, `STATE`, `USER_NAME`, `VERSION`,`CREATION_DATE`, `PROFILE_ID`,`EMAIL`) VALUES ('1', '73acd9a5972130b75066c82595a1fae3', 'ACTIVE', 'ADMIN', '1', sysdate(),'1','passrecover2017@gmail.com');
+INSERT INTO `sanatorio`.`users` (`USER_ID`, `PASSWORD`, `STATE`, `USER_NAME`, `VERSION`,`CREATION_DATE`, `PROFILE_ID`,`EMAIL`) VALUES ('3', '10c4981bb793e1698a83aea43030a388', 'ACTIVE', 'admin.admin', '1', sysdate(),'1','admin');
+INSERT INTO `sanatorio`.`users` (`USER_ID`, `PASSWORD`, `STATE`, `USER_NAME`, `VERSION`,`CREATION_DATE`, `PROFILE_ID`,`EMAIL`) VALUES ('2', '32129ccd0b3861befbc83383cda8ee87', 'ACTIVE', 'santos.santiago', '1', sysdate(),'1','lecx0110@gmail.com');
 
 
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='1' WHERE `MENU_KEY`='MENU_ID';

@@ -25,16 +25,16 @@
 							<h:form>
 								<fieldset class="clearfix">
 									<p>
-										<input type="text" Placeholder="#{language['user']}"
+										<input type="text" Placeholder="#{language['user']}" pattern="[A-Za-z0-9!_-]{3,10}.[A-Za-z0-9!_-]{3,10}" title="formato incial valido xxx.xxx"
 											jsf:id="user" jsf:value="#{SecurityPageBean.entity.userName}" />
-										<h:message for="user" styleClass="alert"
+										<h:message for="user" styleClass="alert" showDetail="false"
 											style="font-size:11px;margin-left:-20px;" />
 									</p>
 									<p>
-										<input type="password" Placeholder="#{language['password']}"
+										<input type="password" Placeholder="#{language['password']}" pattern="[A-Za-z0-9!_-]{7,15}" title="debe contener al menos 7 caracteres y maximo 15."
 											jsf:value="#{SecurityPageBean.entity.passWord}"
 											jsf:id="password" />
-										<h:message for="password" styleClass="alert"
+										<h:message for="password" styleClass="alert" showDetail="false"
 											style="font-size:11px;margin-left:-20px;" />
 									</p>
 
@@ -46,7 +46,7 @@
 										<p:commandLink class="badge"
 											action="/init/recoveryPassword.view?faces-redirect=true" immediate="true">#{language['password.reset']}</p:commandLink>
 									</div>
-									<h:messages globalOnly="true" styleClass="alert"
+									<h:messages globalOnly="true" styleClass="alert" rendered="true"
 										style="list-style-type: none;font-size:12px;margin-left:-20px;" />
 								</fieldset>
 								<div class="clearfix"></div>
