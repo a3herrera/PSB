@@ -298,10 +298,9 @@ public class StringUtility {
 			crunchifyValueObj.add((char) i);
 		
 		}
-		crunchifyValueObj.add((char) 64);
-		crunchifyValueObj.add((char) 33);
-		crunchifyValueObj.add((char) 45);
-		crunchifyValueObj.add((char) 95);
+		crunchifyValueObj.add((char) 33); // !
+		crunchifyValueObj.add((char) 45); // -
+		crunchifyValueObj.add((char) 95); // _
 
 		return crunchifyValueObj;
 	}
