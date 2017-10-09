@@ -279,11 +279,9 @@ public class StringUtility {
 		}
 		return "";
 	}
-	
-	public static ArrayList<Object> generateASCII(){
 
+	public static ArrayList<Object> generateASCII() {
 		ArrayList<Object> crunchifyValueObj;
-
 		crunchifyValueObj = new ArrayList<>();
 
 		for (int i = 48; i < 58; i++) {
@@ -296,7 +294,7 @@ public class StringUtility {
 
 		for (int i = 97; i < 123; i++) {
 			crunchifyValueObj.add((char) i);
-		
+
 		}
 		crunchifyValueObj.add((char) 33); // !
 		crunchifyValueObj.add((char) 45); // -
@@ -306,11 +304,10 @@ public class StringUtility {
 	}
 
 	public static char crunchifyGetRandom(ArrayList<Object> crunchifyValueObj) {
-		
+
 		SecureRandom crunchifyRandomNo = new SecureRandom();
-		
-		char crunchifyChar = (char) crunchifyValueObj
-				.get(crunchifyRandomNo.nextInt(crunchifyValueObj.size()));
+
+		char crunchifyChar = (char) crunchifyValueObj.get(crunchifyRandomNo.nextInt(crunchifyValueObj.size()));
 
 		return crunchifyChar;
 	}
