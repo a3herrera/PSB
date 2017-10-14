@@ -150,6 +150,7 @@ public class ProfilesPageBean extends JPAEntityBean<Profile> {
 	@Override
 	protected void afterSave() {
 		entityOptions = null;
+		super.afterSave();
 	}
 
 	@Override
