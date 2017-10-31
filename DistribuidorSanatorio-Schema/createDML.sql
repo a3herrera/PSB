@@ -32,6 +32,15 @@ INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY
 UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='7' WHERE `MENU_KEY`='MENU_ID';
 INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`,`CREATION_DATE`) VALUES ('7', '/internals/internals.xhtml', '1', 'Internals', '1', 'label.menu.internal', '1', '1',sysdate());
 
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='8' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('8', '/internals/internal.xhtml', '1', 'Centers', '1', 'label.menu.internal', '1', '1', '7',sysdate());
+
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='9' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('9', '/internals/intVacations.xhtml', '1', 'Areas', '1', 'label.menu.internal.vacations', '1', '1', '7',sysdate());
+
+UPDATE `sanatorio`.`seq_menu_option_id` SET `MENU_VALUE`='10' WHERE `MENU_KEY`='MENU_ID';
+INSERT INTO `sanatorio`.`menu_options` (`MENU_ID`, `URL`, `ACTIVE`, `DEFAULT_KEY`, `IS_PARENT`, `KEY_`, `REDIRECT`, `VERSION`, `PARENT_ID`,`CREATION_DATE`) VALUES ('10', '/internals/intPermission.xhtml', '1', 'Areas', '1', 'label.menu.internal.permission', '1', '1', '7',sysdate());
+
 
 INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '1');
 INSERT INTO `sanatorio`.`profile_options` (`PROFILE_ID`, `MENU_ID`) VALUES ('1', '4');

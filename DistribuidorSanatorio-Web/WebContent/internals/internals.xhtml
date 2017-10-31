@@ -6,5 +6,23 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:s="http://jboss.com/products/seam/taglib"
 	xmlns:p="http://primefaces.org/ui" template="/base/mainTemplate.xhtml">
-
+	
+	<ui:define name="pageTitle">
+		<title>#{language['label.menu.internal']}</title>
+	</ui:define>
+	<ui:define name="body">
+		<div class="row">
+			<span class="h4">#{language['label.menu.internal']}</span>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:include src="/base/subMenu.xhtml" />
+			</div>
+		</div>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col">
+				<ui:insert name="subBody" />
+			</div>
+		</div>
+	</ui:define>
 </ui:composition>
